@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<Foundry>
+<VM>
+<ClientMetaData>
+<clientMetaDataAttributes/>
+<HistoryEventList/></ClientMetaData>
+<VMId type="string">52 73 97 52 15 b0 0b 8b-52 d7 4c fe 14 59 75 59</VMId>
+<vmxPathName type="string">windows-10-22h2-enterprise-250331-184159.vmx</vmxPathName></VM></Foundry>

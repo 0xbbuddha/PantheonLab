@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<Foundry>
+<VM>
+<ClientMetaData>
+<clientMetaDataAttributes/>
+<HistoryEventList/></ClientMetaData>
+<VMId type="string">52 30 41 87 45 7d c4 05-ab 17 dd 33 39 cc 72 f1</VMId>
+<vmxPathName type="string">generic-debian12-vmware-x64.vmx</vmxPathName></VM></Foundry>

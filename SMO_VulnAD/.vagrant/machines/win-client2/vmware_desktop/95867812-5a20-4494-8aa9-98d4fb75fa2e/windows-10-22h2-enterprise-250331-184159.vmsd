@@ -1,0 +1,5 @@
+.encoding = "windows-1252"
+cloneOf0 = "C:\Users\micro\.vagrant.d\boxes\gusztavvargadr-VAGRANTSLASH-windows-10\2202.0.2503\amd64\vmware_desktop\windows-10-22h2-enterprise-250331-184159.vmx"
+numCloneOf = "1"
+sentinel0 = "disk-cl2.vmdk"
+numSentinels = "1"

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<Foundry>
+<VM>
+<ClientMetaData>
+<clientMetaDataAttributes/>
+<HistoryEventList/></ClientMetaData>
+<VMId type="string">52 ae e3 65 25 84 0b 42-11 e9 31 57 79 3f 57 ff</VMId>
+<vmxPathName type="string">packer-vmware-iso.vmx</vmxPathName></VM></Foundry>
