@@ -54,3 +54,11 @@
     - athena.gpg
     - hermes.gpg
     - hades.gpg
+
+- name: Déployer un faux bash_history avec la commande GPG
+  copy:
+    src: bash_history
+    dest: /home/hera/.bash_history
+    owner: hera
+    group: hera
+    mode: '0600'
