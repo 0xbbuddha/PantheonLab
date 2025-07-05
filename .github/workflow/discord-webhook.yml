@@ -1,0 +1,21 @@
+name: Discord Notification on Push
+
+on:
+  push:
+    branches:
+      - main  # Ou toute branche que tu veux suivre
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Discord webhook
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          MESSAGE="📦 Nouveau push sur **${{ github.repository }}** par **${{ github.actor }}**"
+          PAYLOAD="{\"content\": \"$MESSAGE\"}"
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d "$PAYLOAD" \
+               "$DISCORD_WEBHOOK"
