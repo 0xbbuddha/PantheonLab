@@ -1,20 +1,57 @@
-name: Discord Notification on Push
+name: Discord Notifier
 
 on:
   push:
-    branches:
-      - main  # Ou toute branche que tu veux suivre
+  create:
+  fork:
+  delete:
+  pull_request:
+    types: [opened, closed]
 
 jobs:
-  notify:
+  discord:
     runs-on: ubuntu-latest
     steps:
-      - name: Send Discord webhook
+      - name: Notify Discord
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
-          MESSAGE="📦 Nouveau push sur **${{ github.repository }}** par **${{ github.actor }}**"
-          PAYLOAD="{\"content\": \"$MESSAGE\"}"
+          EVENT_NAME="${{ github.event_name }}"
+          ACTOR="${{ github.actor }}"
+          REPO="${{ github.repository }}"
+          REF="${{ github.ref }}"
+          API_URL="${{ github.event.repository.html_url }}"
+          COMMIT_MESSAGE="${{ github.event.head_commit.message }}"
+          COMMIT_URL="${{ github.event.head_commit.url }}"
+          DEFAULT_MESSAGE="🔔 Un événement **$EVENT_NAME** a été déclenché par **$ACTOR** sur **$REPO**"
+
+          case $EVENT_NAME in
+            push)
+              MESSAGE="📦 **$ACTOR** a pushé sur \`$REF\` dans **$REPO**\n\n> _${COMMIT_MESSAGE}_\n🔗 [$COMMIT_URL]($COMMIT_URL)"
+              ;;
+            create)
+              MESSAGE="🆕 **$ACTOR** a créé \`$REF\` dans **$REPO**"
+              ;;
+            delete)
+              MESSAGE="❌ **$ACTOR** a supprimé \`$REF\` dans **$REPO**"
+              ;;
+            fork)
+              FORK_URL="${{ github.event.forkee.html_url }}"
+              MESSAGE="🍴 **$ACTOR** a forké **$REPO** ➡️ [Voir le fork]($FORK_URL)"
+              ;;
+            pull_request)
+              PR_TITLE="${{ github.event.pull_request.title }}"
+              PR_URL="${{ github.event.pull_request.html_url }}"
+              PR_STATE="${{ github.event.action }}"
+              MESSAGE="📄 Pull request **$PR_STATE** par **$ACTOR** sur **$REPO** :\n> _${PR_TITLE}_\n🔗 $PR_URL"
+              ;;
+            *)
+              MESSAGE=$DEFAULT_MESSAGE
+              ;;
+          esac
+
+          PAYLOAD=$(jq -nc --arg content "$MESSAGE" '{content: $content}')
+          
           curl -H "Content-Type: application/json" \
                -X POST \
                -d "$PAYLOAD" \
