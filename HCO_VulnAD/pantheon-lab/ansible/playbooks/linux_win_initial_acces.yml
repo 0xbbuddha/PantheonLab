@@ -1,6 +1,6 @@
 ---
 - name: Configuration de l'utilisateur smbscores sur Linux
-  hosts: linux
+  hosts: all
   become: yes
   tasks:
     - name: Création du répertoire /opt/scores

@@ -89,6 +89,7 @@
         login_unix_socket: /var/run/mysqld/mysqld.sock
         login_password: "{{ mysql_root_password }}"
       tags: [ mysql ]
+      no_log: true
 
     - name: Remove anonymous MySQL users
       mysql_user:
@@ -99,6 +100,7 @@
         login_password: "{{ mysql_root_password }}"
         login_unix_socket: /var/run/mysqld/mysqld.sock
       tags: [ mysql ]
+      no_log: true
 
     - name: Remove test database
       mysql_db:
@@ -108,6 +110,7 @@
         login_password: "{{ mysql_root_password }}"
         login_unix_socket: /var/run/mysqld/mysqld.sock
       tags: [ mysql ]
+      no_log: true
 
     - name: Create WordPress database
       mysql_db:
@@ -117,6 +120,7 @@
         login_password: "{{ mysql_root_password }}"
         login_unix_socket: /var/run/mysqld/mysqld.sock
       tags: [ mysql ]
+      no_log: true
 
     - name: Create WordPress DB user
       mysql_user:
@@ -128,6 +132,7 @@
         login_password: "{{ mysql_root_password }}"
         login_unix_socket: /var/run/mysqld/mysqld.sock
       tags: [ mysql ]
+      no_log: true
 
     # ---------------------
     # UFW SETUP
@@ -195,6 +200,7 @@
       shell: wp core is-installed --allow-root
       register: wp_installed
       ignore_errors: yes
+      failed_when: false
 
     - name: Install WordPress if not present
       become_user: www-data
@@ -277,11 +283,28 @@
           --post_type=page \
           --post_title="Bienvenue au mont Olympe" \
           --post_name="bienvenue-au-mont-olympe" \
-          --post_content="{{ bienvenue_au_mont_olympe }}" \
+          --post_content="$(cat {{ playbook_dir }}/../files/homepage_content.html)" \
           --post_status=publish \
           --allow-root
       tags: [ wordpress ]
 
+    - name: Importer le favicon dans la médiathèque WordPress
+      become_user: www-data
+      args:
+        chdir: "/var/www/{{ http_host }}/wordpress"
+      shell: |
+        wp media import wp-content/uploads/img_Pantheon_logo_wordpress.png --title="Pantheon Favicon" --porcelain --allow-root
+      register: favicon_id
+      tags: [ wordpress ]
+
+    - name: Définir le favicon WordPress (site_icon)
+      become_user: www-data
+      args:
+        chdir: "/var/www/{{ http_host }}/wordpress"
+      shell: |
+        wp option update site_icon {{ favicon_id.stdout }} --allow-root
+      when: favicon_id.stdout is defined and favicon_id.stdout != ""
+      tags: [ wordpress ]
 
     - name: Set "Bienvenue au mont Olympe" as homepage
       become_user: www-data

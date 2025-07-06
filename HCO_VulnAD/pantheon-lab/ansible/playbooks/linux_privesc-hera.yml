@@ -1,0 +1,70 @@
+---
+- hosts: all
+  become: yes
+  vars_files:
+    - ../vars/linux_gods_users.yml
+  tasks:
+    - name: Créer le groupe super-dieu
+      group:
+        name: super-dieu
+        state: present
+
+    - name: Ajouter l'utilisateur hera au groupe super-dieu
+      user:
+        name: "{{ hera_user }}"
+        groups: super-dieu
+        append: yes
+
+    - name: Créer le dossier /opt/hooks
+      file:
+        path: /opt/hooks
+        state: directory
+        owner: root
+        group: super-dieu
+        mode: '0770'
+
+    - name: Déployer le script exec_hooks.sh
+      copy:
+        src: ../files/scripts/exec_hooks.sh
+        dest: /root/exec_hooks.sh
+        owner: root
+        group: root
+        mode: '0750'
+
+    - name: Déployer le template de configuration GPG
+      template:
+        src: ../files/templates/config.conf.j2
+        dest: /opt/config.conf
+        owner: root
+        group: root
+        mode: '0600'
+
+    - name: Ajouter une tâche cron pour exécuter le script de hooks
+      cron:
+        name: "Exec hooks privesc hera"
+        user: root
+        job: "/root/exec_hooks.sh"
+        minute: "*/5"
+
+    - name: Copier tous les hooks chiffrés dans /opt/hooks
+      copy:
+        src: "../files/gpg/{{ item }}"
+        dest: "/opt/hooks/{{ item }}"
+        owner: root
+        group: root
+        mode: '0600'
+      with_items:
+        - zeus.gpg
+        - hera.gpg
+        - poseidon.gpg
+        - athena.gpg
+        - hermes.gpg
+        - hades.gpg
+
+    - name: Déployer un faux bash_history avec la commande GPG
+      copy:
+        src: ../files/scripts/bash_history
+        dest: /home/{{ hera_user }}/.bash_history
+        owner: "{{ hera_user }}"
+        group: "{{ hera_user }}"
+        mode: '0600'

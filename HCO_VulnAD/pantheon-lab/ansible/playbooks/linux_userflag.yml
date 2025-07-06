@@ -29,7 +29,7 @@
 
     - name: Créer le fichier authorized_keys pour Hermès
       ansible.builtin.template:
-#        src: ../files/templates/hermes_message.txt.j2
+        src: ../files/templates/hermes_message.txt.j2
         dest: /home/hermes/.ssh/authorized_keys
         mode: '0600'
         owner: hermes
@@ -83,14 +83,12 @@
     - name: Créer les utilisateurs dieux sur WordPress (admin)
       become_user: www-data
       ansible.builtin.shell: |
-        if ! wp user get "{{ item.name | lower | replace('é', 'e') | replace('è', 'e') | replace('ê', 'e') | replace('à', 'a') | replace('â', 'a') | replace('ï', 'i') | replace('î', 'i') | replace('ô', 'o') | replace('ù', 'u') | replace('ç', 'c') | replace(' ', '_') }}" --allow-root &>/dev/null; then
-          wp user create \
-            "{{ item.name | lower | replace('é', 'e') | replace('è', 'e') | replace('ê', 'e') | replace('à', 'a') | replace('â', 'a') | replace('ï', 'i') | replace('î', 'i') | replace('ô', 'o') | replace('ù', 'u') | replace('ç', 'c') | replace(' ', '_') }}" \
-            "{{ item.name | lower | replace('é', 'e') | replace('è', 'e') | replace('ê', 'e') | replace('à', 'a') | replace('â', 'a') | replace('ï', 'i') | replace('î', 'i') | replace('ô', 'o') | replace('ù', 'u') | replace('ç', 'c') | replace(' ', '_') }}@pantheon.god" \
-            --user_pass="{{ item.password }}" \
-            --role=administrator \
-            --allow-root
-        fi
+        wp user create \
+          "{{ item.name | lower | replace('é', 'e') | replace('è', 'e') | replace('ê', 'e') | replace('à', 'a') | replace('â', 'a') | replace('ï', 'i') | replace('î', 'i') | replace('ô', 'o') | replace('ù', 'u') | replace('ç', 'c') | replace(' ', '_') }}" \
+          "{{ item.name | lower | replace('é', 'e') | replace('è', 'e') | replace('ê', 'e') | replace('à', 'a') | replace('â', 'a') | replace('ï', 'i') | replace('î', 'i') | replace('ô', 'o') | replace('ù', 'u') | replace('ç', 'c') | replace(' ', '_') }}@pantheon.god" \
+          --user_pass="{{ item.password }}" \
+          --role=administrator \
+          --allow-root || true
       args:
         chdir: /var/www/{{ http_host }}/wordpress
       environment:
@@ -98,6 +96,7 @@
         LC_ALL: fr_FR.UTF-8
       loop: "{{ wordpress_users_gods }}"
       tags: [ wp_users ]
+      failed_when: false
 
   handlers:
     - name: restart apache2

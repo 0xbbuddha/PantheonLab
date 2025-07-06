@@ -25,3 +25,7 @@ linux_users_gods:
   - name: Dionysos
     password: "lnvksdjfD!0nys0s@2025"
 
+# Variables pour le privesc-hera
+hera_user: hera
+gpg_passphrase: "insecurePassword123"
+
