@@ -5,13 +5,23 @@ Vagrant.configure("2") do |config|
     olympe.vm.hostname = "OlympeWordpress"
     olympe.vm.network "private_network", ip: "192.168.56.10"
     olympe.vm.synced_folder "../ansible", "/home/vagrant/ansible"
-    olympe.vm.provision "shell", inline: <<-SHELL
+    config.vm.provision "shell", inline: <<-SHELL
       sudo apt-get update
+      sudo apt-get install -y software-properties-common
+      sudo add-apt-repository -y ppa:deadsnakes/ppa
+      sudo apt-get update
+      sudo apt-get install -y python3.8 python3.8-distutils
+      sudo apt-get install -y python3-apt
+      sudo mkdir -p /usr/lib/python3.8/dist-packages
+      sudo ln -sf /usr/lib/python3/dist-packages/apt_pkg.cpython-36m-x86_64-linux-gnu.so /usr/lib/python3.8/dist-packages/apt_pkg.cpython-38-x86_64-linux-gnu.so
+      sudo ln -sf /usr/lib/python3/dist-packages/apt_inst.cpython-36m-x86_64-linux-gnu.so /usr/lib/python3.8/dist-packages/apt_inst.cpython-38-x86_64-linux-gnu.so
+      sudo ln -sf /usr/lib/python3/dist-packages/apt /usr/lib/python3.8/dist-packages/apt
       sudo locale-gen fr_FR.UTF-8
       sudo update-locale LANG=fr_FR.UTF-8 LC_ALL=fr_FR.UTF-8
       echo "export LANG=fr_FR.UTF-8" | sudo tee -a /etc/profile
       echo "export LC_ALL=fr_FR.UTF-8" | sudo tee -a /etc/profile
     SHELL
+
     olympe.vm.provider "virtualbox" do |vb|
       vb.memory = "2048"
       vb.cpus = 2

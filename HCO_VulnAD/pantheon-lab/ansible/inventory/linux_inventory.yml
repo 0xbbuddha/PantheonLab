@@ -7,23 +7,23 @@ all:
           ansible_host: 192.168.56.10
           data_path: "{{ playbook_dir }}/../vars"
           playbook_path: "{{ playbook_dir }}"
-  vars:
-    ansible_user: vagrant
-    ansible_private_key_file: "../vagrant/olympe/.vagrant/machines/olympe-wordpress/virtualbox/private_key"
-    ansible_connection: ssh
-    ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
-    ansible_python_interpreter: /usr/bin/python3
-    ansible_become: yes
-    ansible_become_method: sudo
-    ansible_compatibility_mode: "2.0"
+# vars:
+#   ansible_user: vagrant
+#   ansible_private_key_file: "../vagrant/olympe/.vagrant/machines/olympe-wordpress/virtualbox/private_key"
+#   ansible_connection: ssh
+#   ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+#   ansible_python_interpreter: /usr/bin/python3
+#   ansible_become: yes
+#   ansible_become_method: sudo
+#   ansible_compatibility_mode: "2.0"
   hosts:
     olympe-wordpress:
-      ansible_host: 127.0.0.1
-      ansible_port: 2222
+#      ansible_host: 127.0.0.1
+#      ansible_port: 2222
       ansible_user: vagrant
-      ansible_private_key_file: "../vagrant/olympe/.vagrant/machines/olympe-wordpress/virtualbox/private_key"
+      ansible_private_key_file: "../vagrant/.vagrant/machines/olympe-wordpress/virtualbox/private_key"
       ansible_connection: ssh
-      ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o PubkeyAcceptedKeyTypes=+ssh-rsa -o HostKeyAlgorithms=+ssh-rsa'
+#      ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o PubkeyAcceptedKeyTypes=+ssh-rsa -o HostKeyAlgorithms=+ssh-rsa'
       ansible_python_interpreter: /usr/bin/python3.8
       ansible_become: yes
       ansible_become_method: sudo
