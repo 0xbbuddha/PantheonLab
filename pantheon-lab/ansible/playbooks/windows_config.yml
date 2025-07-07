@@ -1,13 +1,18 @@
 - name: "Read data files"
-  hosts: domain:extensions #Dans le fichier inventory
+  hosts: "{{ target_host | default('domain:extensions') }}"
   connection: local
-  vars_files:
-    - "{{data_path}}/dc.json"
-    - "{{data_path}}/windows_common.yml"
   tasks:
+    - name: Load configuration files
+      include_vars:
+        file: "{{ item }}"
+      loop:
+        - "{{ data_path }}/dc.json"
+        - "{{ data_path }}/windows_common.yml"
+      run_once: true
+
     - name: save all variables as Facts
       set_fact:
-        lab: "{{lab}}"
+        lab: "{{ lab }}"
         windows_config_loaded: true
         hostname: "{{ hostname }}"
         domain: "{{ domain }}"
