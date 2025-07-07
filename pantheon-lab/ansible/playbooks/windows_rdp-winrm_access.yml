@@ -5,11 +5,13 @@
 - name: Autoriser l'accès distant RDP aux dieux et cronos
   hosts: extensions
   tasks:
-    - name: Ajouter les dieux du domaine et cronos au groupe local Remote Desktop Users
+#    - name: Ajouter les dieux du domaine et cronos au groupe local Remote Desktop Users
+    - name: Ajouter les dieux du domaine et orphee au groupe local Remote Desktop Users
       win_group_membership:
         name: "Remote Desktop Users"
         members:
-          - "PANTHEON\\cronos"
+#          - "PANTHEON\\cronos"
+          - "PANTHEON\\orphee"
           - "OLYMPE-GODS"
         state: present
 
