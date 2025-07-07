@@ -1,5 +1,0 @@
-.encoding = "windows-1252"
-cloneOf0 = "C:\Users\micro\.vagrant.d\boxes\kalilinux-VAGRANTSLASH-rolling\2025.1.0\amd64\vmware_desktop\packer-vmware-iso.vmx"
-numCloneOf = "1"
-sentinel0 = "disk-cl1.vmdk"
-numSentinels = "1"

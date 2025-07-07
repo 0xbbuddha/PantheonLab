@@ -1,5 +1,0 @@
-.encoding = "windows-1252"
-cloneOf0 = "C:\Users\micro\.vagrant.d\boxes\generic-VAGRANTSLASH-debian12\4.3.12\amd64\vmware_desktop\generic-debian12-vmware-x64.vmx"
-numCloneOf = "1"
-sentinel0 = "generic-debian12-vmware-x64-cl1.vmdk"
-numSentinels = "1"
