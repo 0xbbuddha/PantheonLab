@@ -5,6 +5,6 @@ nano notes.txt
 sudo apt update
 sudo apt install gpg -y
 gpg --symmetric
-insecurePassword123
+M0n@mourP0urZ3u$!2025
 clear
 history | grep gpg
