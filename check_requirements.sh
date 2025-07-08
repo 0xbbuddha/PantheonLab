@@ -72,12 +72,30 @@ suggest_install() {
 # Liste des dépendances à vérifier
 REQUIREMENTS=(python3 pip3 vagrant VBoxManage ansible git)
 
+MISSING=()
+
 for dep in "${REQUIREMENTS[@]}"; do
-    if ! command -v "$dep" &> /dev/null; then
-        echo "$dep n'est pas installé. Commande suggérée : $(suggest_install $dep)"
-        exit 1
+    if [ "$dep" = "VBoxManage" ]; then
+        # VBoxManage peut ne pas être dans le PATH, on vérifie aussi dans les chemins courants
+        if ! command -v VBoxManage &> /dev/null && \
+           [ ! -x "/usr/lib/virtualbox/VBoxManage" ] && \
+           [ ! -x "/opt/VirtualBox/VBoxManage" ]; then
+            MISSING+=("$dep")
+            echo "$dep n'est pas installé. Commande suggérée : $(suggest_install $dep)"
+        fi
+    else
+        if ! command -v "$dep" &> /dev/null; then
+            MISSING+=("$dep")
+            echo "$dep n'est pas installé. Commande suggérée : $(suggest_install $dep)"
+        fi
     fi
 
 done
 
-echo "Toutes les dépendances requises sont installées." 
+if [ ${#MISSING[@]} -eq 0 ]; then
+    echo "Toutes les dépendances requises sont installées."
+    exit 0
+else
+    echo "\nDépendances manquantes : ${MISSING[*]}"
+    exit 1
+fi 
