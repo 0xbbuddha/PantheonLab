@@ -29,7 +29,7 @@ fi
 # Lancer le script de démarrage du lab
 if [ -f pantheon-lab/pantheonv2.sh ]; then
     echo "[+] Lancement du lab via pantheon-lab/pantheonv2.sh..."
-    bash pantheon-lab/pantheonv2.sh
+    bash -c 'cd pantheon-lab; ./pantheonv2.sh'
 else
     echo "[!] Le script pantheon-lab/pantheonv2.sh est introuvable."
     exit 1
