@@ -44,7 +44,7 @@ def check_dependencies():
         task = progress.add_task("Analyse en cours...", total=None)
         
         try:
-            result = subprocess.run(['./pantheonlab.sh'], capture_output=True, text=True)
+            result = subprocess.run(['./check_requirements.sh'], capture_output=True, text=True)
             progress.update(task, completed=True)
             
             if result.returncode == 0:
@@ -79,7 +79,7 @@ def launch_lab():
         ) as progress:
             task = progress.add_task("Démarrage des machines virtuelles...", total=None)
             
-            result = subprocess.run(['./pantheon.sh'], capture_output=True, text=True)
+            result = subprocess.run(['./pantheonv2.sh'], capture_output=True, text=True)
             progress.update(task, completed=True)
             
             if result.returncode == 0:
@@ -264,11 +264,30 @@ def get_lab_status_message():
 
 def main():
     """Fonction principale avec menu minimaliste"""
+    # Vérification du status du lab une seule fois au démarrage
+    status_message = '[grey]Vérification de l\'état du lab...[/grey]'
+    status_color = 'grey'
+    def check_status():
+        nonlocal status_message, status_color
+        msg, col = get_lab_status_message()
+        status_message = msg
+        status_color = col
+    t = threading.Thread(target=check_status)
+    t.start()
+    with Live("", refresh_per_second=10, console=console) as live:
+        while t.is_alive():
+            live.update(f"[{status_color}]{status_message}[/{status_color}]")
+            time.sleep(0.1)
+        live.update(f"[{status_color}]{status_message}[/{status_color}]")
+    console.print()
+
     while True:
         console.clear()
         print_header()
-
-        # Affichage du menu principal immédiatement
+        # Affichage du status du lab (déjà calculé)
+        console.print(f"[{status_color}]{status_message}[/{status_color}]")
+        console.print()
+        # Affichage du menu principal
         console.print("[*] Menu Principal", style="cyan")
         console.print("[+] 1. Vérifier les dépendances", style="white")
         console.print("[+] 2. Lancer le lab", style="white")
@@ -277,24 +296,6 @@ def main():
         console.print("[+] 5. Aide", style="white")
         console.print("[+] q. Quitter", style="red")
         console.print()
-
-        # Affichage asynchrone de l'état du lab
-        status_message = '[grey]Vérification de l\'état du lab...[/grey]'
-        status_color = 'grey'
-        def check_status():
-            nonlocal status_message, status_color
-            msg, col = get_lab_status_message()
-            status_message = msg
-            status_color = col
-        t = threading.Thread(target=check_status)
-        t.start()
-        with Live("", refresh_per_second=10, console=console) as live:
-            while t.is_alive():
-                live.update(f"[{status_color}]{status_message}[/{status_color}]")
-                time.sleep(0.1)
-            live.update(f"[{status_color}]{status_message}[/{status_color}]")
-        console.print()
-        
         # Choix de l'utilisateur
         choice = input("[?] Choisissez une option (1-5): ").strip()
         console.print()

@@ -84,16 +84,16 @@ for dep in "${REQUIREMENTS[@]}"; do
             echo "$dep n'est pas installé. Commande suggérée : $(suggest_install $dep)"
         fi
     else
-        if ! command -v "$dep" &> /dev/null; then
+    if ! command -v "$dep" &> /dev/null; then
             MISSING+=("$dep")
-            echo "$dep n'est pas installé. Commande suggérée : $(suggest_install $dep)"
+        echo "$dep n'est pas installé. Commande suggérée : $(suggest_install $dep)"
         fi
     fi
 
 done
 
 if [ ${#MISSING[@]} -eq 0 ]; then
-    echo "Toutes les dépendances requises sont installées."
+echo "Toutes les dépendances requises sont installées." 
     exit 0
 else
     echo "\nDépendances manquantes : ${MISSING[*]}"
