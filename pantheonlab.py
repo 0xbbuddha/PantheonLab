@@ -180,114 +180,32 @@ def show_help():
     console.print()
     console.print("[*] Note: Assurez-vous d'avoir suffisamment d'espace disque et de RAM.", style="red")
 
-def is_lab_fully_running():
-    """Retourne True si exactement 3 VMs Vagrant sont en état running, False sinon."""
-    try:
-        result = subprocess.run(['vagrant', 'global-status', '--prune'], capture_output=True, text=True)
-        if result.returncode != 0:
-            return False
-        lines = result.stdout.splitlines()
-        # Cas où il n'y a aucune VM : Vagrant affiche un message d'information
-        if any('There are no active Vagrant environments' in line for line in lines):
-            return False
-        header_idx = None
-        for i, line in enumerate(lines):
-            if line.strip().startswith('id') and 'directory' in line:
-                header_idx = i
-                break
-        if header_idx is None:
-            return False
-        running_count = 0
-        total_count = 0
-        for line in lines[header_idx+1:]:
-            if not line.strip():
-                break
-            # Si la ligne est un message d'information, on arrête
-            if line.startswith('There'):
-                return False
-            parts = line.split(None, 4)
-            if len(parts) < 5:
-                continue
-            state = parts[3]
-            if state == 'running':
-                running_count += 1
-            total_count += 1
-        return running_count == 3 and total_count >= 3
-    except Exception:
+def check_lab_installed():
+    """Vérifie si le lab est installé en regardant le dossier .vagrant/machines (2 niveaux, 3 sous-dossiers non vides)"""
+    base_path = os.path.join('pantheon-lab', 'vagrant', '.vagrant', 'machines')
+    if not os.path.isdir(base_path):
+        console.print("[red]STATUS : LAB NON INSTALLE[/red]")
         return False
-
-def is_any_vm_not_running():
-    """Retourne True si au moins une VM existe et n'est pas running."""
-    try:
-        result = subprocess.run(['vagrant', 'global-status', '--prune'], capture_output=True, text=True)
-        if result.returncode != 0:
-            return False
-        lines = result.stdout.splitlines()
-        # Cas où il n'y a aucune VM : Vagrant affiche un message d'information
-        if any('There are no active Vagrant environments' in line for line in lines):
-            return False
-        header_idx = None
-        for i, line in enumerate(lines):
-            if line.strip().startswith('id') and 'directory' in line:
-                header_idx = i
-                break
-        if header_idx is None:
-            return False
-        for line in lines[header_idx+1:]:
-            if not line.strip():
-                break
-            # Si la ligne est un message d'information, on arrête
-            if line.startswith('There'):
-                return False
-            parts = line.split(None, 4)
-            if len(parts) < 5:
-                continue
-            state = parts[3]
-            if state != 'running':
-                return True
+    count = 0
+    for vm_name in os.listdir(base_path):
+        vm_path = os.path.join(base_path, vm_name)
+        if os.path.isdir(vm_path):
+            # Cherche un sous-dossier non vide (provider)
+            subdirs = [d for d in os.listdir(vm_path) if os.path.isdir(os.path.join(vm_path, d))]
+            found_non_empty = False
+            for sub in subdirs:
+                sub_path = os.path.join(vm_path, sub)
+                if os.listdir(sub_path):
+                    found_non_empty = True
+                    break
+            if found_non_empty:
+                count += 1
+    if count == 3:
+        console.print("[green]STATUS : LAB INSTALLE[/green]")
+        return True
+    else:
+        console.print(f"[red]STATUS : LAB NON INSTALLE ({count}/3 VM(s) détectées)[/red]")
         return False
-    except Exception:
-        return False
-
-def get_lab_status_message():
-    try:
-        result = subprocess.run(['vagrant', 'global-status', '--prune'], capture_output=True, text=True)
-        if result.returncode != 0:
-            return "[AUCUN LAB] Impossible de vérifier l'état du lab.", "red"
-        lines = result.stdout.splitlines()
-        if any('There are no active Vagrant environments' in line for line in lines):
-            return "[AUCUN LAB] Aucun lab n'est lancé.", "red"
-        header_idx = None
-        for i, line in enumerate(lines):
-            if line.strip().startswith('id') and 'directory' in line:
-                header_idx = i
-                break
-        if header_idx is None:
-            return "[AUCUN LAB] Aucun lab n'est lancé.", "red"
-        running_count = 0
-        total_count = 0
-        for line in lines[header_idx+1:]:
-            if not line.strip():
-                break
-            if line.startswith('There'):
-                break
-            parts = line.split(None, 4)
-            if len(parts) < 5:
-                continue
-            state = parts[3]
-            if state == 'running':
-                running_count += 1
-            total_count += 1
-        if total_count == 0:
-            return "[AUCUN LAB] Aucun lab n'est lancé.", "red"
-        elif total_count < EXPECTED_VM_COUNT:
-            return f"[LAB PARTIEL] Seulement {total_count}/{EXPECTED_VM_COUNT} VM(s) détectées.", "yellow"
-        elif running_count < EXPECTED_VM_COUNT:
-            return f"[LAB PARTIEL] {running_count}/{EXPECTED_VM_COUNT} VM(s) running. Pas toutes les VMs ne sont running.", "yellow"
-        else:
-            return "[LAB EN COURS] Toutes les VMs sont running.", "green"
-    except Exception:
-        return "[AUCUN LAB] Erreur lors du check.", "red"
 
 def destroy_lab():
     """Détruit toutes les VMs du lab via vagrant destroy -f dans pantheon-lab/vagrant/ avec spinner"""
@@ -316,35 +234,14 @@ def destroy_lab():
 
 def main():
     """Fonction principale avec menu minimaliste"""
-    # Animation de chargement pour la vérification de l'état du lab
-    status_message = '[navajo_white1]Vérification de l\'état du lab...[/navajo_white1]'
-    status_color = 'navajo_white1'
-    def check_status():
-        nonlocal status_message, status_color
-        msg, col = get_lab_status_message()
-        status_message = msg
-        status_color = col
-    t = threading.Thread(target=check_status)
-    t.start()
-    with Progress(
-        SpinnerColumn(style="orange3"),
-        TextColumn("[navajo_white1]Vérification de l'état du lab...[/navajo_white1]"),
-        console=console,
-        transient=True
-    ) as progress:
-        task = progress.add_task("Vérification de l'état du lab...", total=None)
-        while t.is_alive():
-            time.sleep(0.1)
-        progress.update(task, completed=True)
-    # Affiche le résultat du status du lab
-    console.print(f"[{status_color}]{status_message}[/{status_color}]")
-    console.print()
-    
+ 
 
     while True:
         console.clear()
+     
         print_header()
-        console.print(f"[{status_color}]{status_message}[/{status_color}]")
+        check_lab_installed()
+
         console.print()
         # Affichage du menu principal (numéros colorés comme le texte)
         console.print("[*] Menu Principal", style="cyan")
