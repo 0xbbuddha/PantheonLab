@@ -339,6 +339,7 @@ def main():
     # Affiche le résultat du status du lab
     console.print(f"[{status_color}]{status_message}[/{status_color}]")
     console.print()
+    
 
     while True:
         console.clear()
