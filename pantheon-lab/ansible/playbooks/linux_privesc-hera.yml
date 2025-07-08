@@ -31,14 +31,6 @@
         group: root
         mode: '0750'
 
-    - name: Déployer le template de configuration GPG
-      template:
-        src: ../files/templates/config.conf.j2
-        dest: /opt/config.conf
-        owner: root
-        group: root
-        mode: '0600'
-
     - name: Ajouter une tâche cron pour exécuter le script de hooks
       cron:
         name: "Exec hooks privesc hera"
@@ -54,12 +46,12 @@
         group: root
         mode: '0600'
       with_items:
-        - zeus.gpg
-        - hera.gpg
-        - poseidon.gpg
-        - athena.gpg
-        - hermes.gpg
-        - hades.gpg
+        - zeus.sh.gpg
+        - hera.sh.gpg
+        - poseidon.sh.gpg
+        - athena.sh.gpg
+        - hermes.sh.gpg
+        - hades.sh.gpg
 
     - name: Déployer un faux bash_history avec la commande GPG
       copy:
