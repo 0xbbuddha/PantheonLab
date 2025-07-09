@@ -4,7 +4,7 @@
 param(
     [string]$Target = "pantheon.god",
     [string]$Username = "hera",
-    [string]$Password = "imissqueen2",
+    [string]$Password = "Qu33n0fG0ds!2025",
     [string]$LogFile = "C:\Windows\Temp\hera-dpapi.log"
 )
 

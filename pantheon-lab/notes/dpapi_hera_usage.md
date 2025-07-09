@@ -6,7 +6,7 @@ Les credentials de Hera sont maintenant stockés dans la DPAPI (Data Protection 
 ## Configuration automatique
 Le playbook `windows_dpapi.yml` configure automatiquement :
 - Une tâche planifiée qui s'exécute au démarrage sous le compte `PANTHEON\hera`
-- Injection du credential via : `cmdkey /add:pantheon.god /user:hera /pass:imissqueen2`
+- Injection du credential via : `cmdkey /add:pantheon.god /user:hera /pass:Qu33n0fG0ds!2025`
 - Configuration sur les deux machines Windows : `pantheon-dc01` et `pantheon-enfers`
 
 ## Exploitation
@@ -44,7 +44,7 @@ SharpDPAPI.exe triage
 Après l'extraction DPAPI, vous devriez trouver :
 - **Domaine** : `pantheon.god`
 - **Utilisateur** : `hera`
-- **Mot de passe** : `imissqueen2`
+- **Mot de passe** : `Qu33n0fG0ds!2025`
 
 ## Notes importantes
 - Les credentials DPAPI sont spécifiques à l'utilisateur et au profil

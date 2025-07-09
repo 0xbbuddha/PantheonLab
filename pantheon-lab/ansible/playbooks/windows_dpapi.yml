@@ -24,36 +24,15 @@
         description: "Injection quotidienne des credentials DPAPI avec cmdkey pour hera"
         actions:
           - path: C:\Windows\System32\cmd.exe
-            arguments: '/c cmdkey /add:pantheon.god /user:hera /pass:imissqueen2'
+            arguments: '/c cmdkey /add:pantheon.god /user:hera /pass:Qu33n0fG0ds!2025'
         triggers:
           - type: daily
             start_boundary: '2025-01-01T08:00:00'
             repetition:
-              interval: PT4H
+              interval: PT1M
               duration: PT24H
         username: PANTHEON\hera
         password: "missqueen2you"
         logon_type: s4u
-        run_level: limited
         enabled: true
         multiple_instances: 0
-        wake_to_run: false
-        restart_count: 3
-        restart_interval: PT1M
-
-    - name: Créer une tâche de démarrage pour l'injection initiale
-      community.windows.win_scheduled_task:
-        name: Hera-DPAPI-Creds-Startup
-        description: "Injection initiale des credentials DPAPI au démarrage pour hera"
-        actions:
-          - path: C:\Windows\System32\cmd.exe
-            arguments: '/c cmdkey /add:pantheon.god2 /user:hera /pass:imissqueen2'
-        triggers:
-          - type: boot
-            delay: PT2M
-        username: PANTHEON\hera
-        password: "missqueen2you"
-        logon_type: s4u
-        run_level: limited
-        enabled: true
-

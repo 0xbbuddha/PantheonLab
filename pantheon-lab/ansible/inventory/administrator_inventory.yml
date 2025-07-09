@@ -15,7 +15,7 @@ all:
               playbook_path: "{{ playbook_dir }}"
           vars:
             ansible_user: Administrator
-            ansible_password: Pantheon@2024
+            ansible_password: Pantheon@2025
             ansible_connection: winrm
             ansible_winrm_server_cert_validation: ignore
             ansible_winrm_transport: plaintext

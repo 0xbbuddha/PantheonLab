@@ -18,11 +18,10 @@ Crée:
 
 DPAPI - Hera:
 - Tâche planifiée qui s'exécute au démarrage sous le compte PANTHEON\hera sur les deux machines Windows
-- Injection du credential via cmdkey /add:pantheon.god /user:hera /pass:imissqueen2
+- Injection du credential via cmdkey /add:pantheon.god /user:hera /pass:Qu33n0fG0ds!2025
 - Permet l'extraction des credentials DPAPI pour apprendre les techniques de post-exploitation
 - Configuration dans windows_dpapi.yml, inclus dans windows_main.yml
 - Documentation dans notes/dpapi_hera_usage.md
-
 
 
 

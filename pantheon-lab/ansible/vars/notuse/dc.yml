@@ -1,7 +1,7 @@
 ---
 # Variables pour les contrôleurs de domaine
-admin_password: "Pantheon@2024"
-safe_mode_password: "Pantheon@2024" 
+admin_password: "Pantheon@2025"
+safe_mode_password: "Pantheon@2025" 
 domain_name: "pantheon.god"
 domain_netbios: "PANTHEON"
 site_name: "Default-First-Site-Name"

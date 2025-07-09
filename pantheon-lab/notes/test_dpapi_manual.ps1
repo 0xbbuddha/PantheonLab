@@ -37,7 +37,7 @@ try {
 # 3. Tester la commande cmdkey manuellement
 Write-Host "`n[3] Test de la commande cmdkey..." -ForegroundColor Yellow
 try {
-    $result = & cmd.exe /c "cmdkey /add:pantheon.god /user:hera /pass:imissqueen2" 2>&1
+    $result = & cmd.exe /c "cmdkey /add:pantheon.god /user:hera /pass:Qu33n0fG0ds!2025" 2>&1
     if ($LASTEXITCODE -eq 0) {
         Write-Host "✅ Commande cmdkey réussie: $result" -ForegroundColor Green
         
@@ -98,7 +98,7 @@ try {
     $scriptPath = "C:\Windows\Temp\hera-dpapi-test.ps1"
     $scriptContent = @"
 try {
-    `$result = & cmdkey /add:pantheon.god /user:hera /pass:imissqueen2 2>&1
+    `$result = & cmdkey /add:pantheon.god /user:hera /pass:Qu33n0fG0ds!2025 2>&1
     Write-Output "cmdkey result: `$result" | Out-File -FilePath "C:\Windows\Temp\hera-dpapi-log.txt" -Append
     
     `$list = & cmdkey /list 2>&1

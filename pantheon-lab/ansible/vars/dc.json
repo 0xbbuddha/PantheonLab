@@ -4,8 +4,8 @@
         "dc01" : {
             "hostname" : "pantheon-dc01",
             "type" : "dc",
-            "domain_admin_password": "Pantheon@2024",
-            "local_admin_password": "Pantheon@2024",
+            "domain_admin_password": "Pantheon@2025",
+            "local_admin_password": "Pantheon@2025",
             "domain" : "pantheon.god",
             "path" : "DC=pantheon,DC=god",
             "local_groups" : {
@@ -23,8 +23,8 @@
         "enfers" : {
             "hostname" : "pantheon-enfers",
             "type" : "client",
-            "domain_admin_password": "Pantheon@2024",
-            "local_admin_password": "Pantheon@2024",
+            "domain_admin_password": "Pantheon@2025",
+            "local_admin_password": "Pantheon@2025",
             "domain" : "pantheon.god",
             "path" : "DC=pantheon,DC=god",
             "local_groups" : {
@@ -129,7 +129,7 @@
                 "zeus" : {
                     "firstname" : "zeus",
                     "surname" : "olympus",
-                    "password" : "Th3und3rK1ng!2024",
+                    "password" : "Th3und3rK1ng!2025",
                     "description" : "Je suis Zeus, le roi de l'Olympe, le maître incontesté du ciel, de la foudre et du tonnerre.",
                     "groups" : ["Domain Admins", "Enterprise Admins", "OLYMPE-GODS"],
                     "path" : "CN=Users,DC=pantheon,DC=god"
@@ -145,7 +145,7 @@
                 "poseidon" : {
                     "firstname" : "poseidon",
                     "surname" : "ocean",
-                    "password" : "Tr1d3ntM@st3r!2024",
+                    "password" : "Tr1d3ntM@st3r!2025",
                     "description" : "Je suis Poséidon, le souverain des océans, le seigneur des tempêtes et le maître des profondeurs.",
                     "groups" : ["OLYMPE-GODS"],
                     "path" : "CN=Users,DC=pantheon,DC=god"
@@ -153,7 +153,7 @@
                 "demeter" : {
                     "firstname" : "demeter",
                     "surname" : "earth",
-                    "password" : "H@rv3stQu33n!2024",
+                    "password" : "H@rv3stQu33n!2025",
                     "description" : "Je suis Déméter, déesse nourricière, gardienne de la terre cultivée, des moissons et de la fertilité.",
                     "groups" : ["OLYMPE-GODS"],
                     "path" : "CN=Users,DC=pantheon,DC=god"
@@ -161,7 +161,7 @@
                 "athena" : {
                     "firstname" : "athena",
                     "surname" : "wisdom",
-                    "password" : "Str@t3g1cM1nd!2024",
+                    "password" : "Str@t3g1cM1nd!2025",
                     "description" : "Je suis Athéna, née toute armée du crâne de Zeus, déesse de la sagesse, de la stratégie et de l'intelligence éclairée.",
                     "groups" : ["OLYMPE-GODS","OLYMPE-SERVICES-MANAGERS"],
                     "path" : "CN=Users,DC=pantheon,DC=god"
@@ -169,7 +169,7 @@
                 "apollo" : {
                     "firstname" : "apollo",
                     "surname" : "sun",
-                    "password" : "G0ld3n@rch3r!2024",
+                    "password" : "G0ld3n@rch3r!2025",
                     "description" : "Je suis Apollon, éclat du soleil, musicien des sphères célestes, dieu des arts, de la lumière, de la médecine et de la vérité.",
                     "groups" : ["OLYMPE-GODS"],
                     "path" : "CN=Users,DC=pantheon,DC=god"
@@ -177,7 +177,7 @@
                 "artemis" : {
                     "firstname" : "artemis",
                     "surname" : "hunt",
-                    "password" : "S1lv3rB0w!2024",
+                    "password" : "S1lv3rB0w!2025",
                     "description" : "Je suis Artémis, sœur d'Apollon, déesse de la chasse, de la nature sauvage et de la lune.",
                     "groups" : ["OLYMPE-GODS"],
                     "path" : "CN=Users,DC=pantheon,DC=god"
@@ -185,7 +185,7 @@
                 "ares" : {
                     "firstname" : "ares",
                     "surname" : "war",
-                    "password" : "Bl00dFury!2024",
+                    "password" : "Bl00dFury!2025",
                     "description" : "Je suis Arès, incarnation vivante du conflit, dieu de la guerre brute, du sang versé et de la rage incontrôlée.",
                     "groups" : ["OLYMPE-GODS"],
                     "path" : "CN=Users,DC=pantheon,DC=god"
@@ -193,7 +193,7 @@
                 "aphrodite" : {
                     "firstname" : "aphrodite",
                     "surname" : "love",
-                    "password" : "B3@utyQu33n!2024",
+                    "password" : "B3@utyQu33n!2025",
                     "description" : "Je suis Aphrodite, née de l'écume des mers, déesse de l'amour, du désir et de la beauté envoûtante.",
                     "groups" : ["OLYMPE-GODS"],
                     "path" : "CN=Users,DC=pantheon,DC=god"
@@ -201,7 +201,7 @@
                 "hephaistos" : {
                     "firstname" : "hephaistos",
                     "surname" : "forge",
-                    "password" : "M@st3rSm1th!2024",
+                    "password" : "M@st3rSm1th!2025",
                     "description" : "Je suis Héphaïstos, maître du feu et des forges divines.",
                     "groups" : ["OLYMPE-GODS"],
                     "path" : "CN=Users,DC=pantheon,DC=god"
@@ -209,7 +209,7 @@
                 "hermes" : {
                     "firstname" : "hermes",
                     "surname" : "messenger",
-                    "password" : "Sw1ftRunn3r!2024",
+                    "password" : "Sw1ftRunn3r!2025",
                     "description" : "Je suis Hermès, le messager ailé, le dieu des voyageurs, des commerçants, des voleurs, et des frontières.",
                     "groups" : ["OLYMPE-GODS"],
                     "path" : "CN=Users,DC=pantheon,DC=god"
@@ -217,7 +217,7 @@
                 "dionysos" : {
                     "firstname" : "dionysos",
                     "surname" : "wine",
-                    "password" : "P@rtyM@st3r!2024",
+                    "password" : "P@rtyM@st3r!2025",
                     "description" : "Je suis Dionysos, dieu du vin, de l'extase, des mystères et des fêtes déchaînées.",
                     "groups" : ["OLYMPE-GODS"],
                     "path" : "CN=Users,DC=pantheon,DC=god"
@@ -225,7 +225,7 @@
                 "achille" : {
                     "firstname" : "achille",
                     "surname" : "pelide",
-                    "password" : "1nv1nc1bl3!2024",
+                    "password" : "1nv1nc1bl3!2025",
                     "description" : "Fils de Thétis (nymphe) et de Pélée (mortel).",
                     "groups" : ["HERO-MORT"],
                     "path" : "OU=ELYSEE,OU=ENFERS,DC=pantheon,DC=god"
@@ -233,7 +233,7 @@
                 "theseus" : {
                     "firstname" : "theseus",
                     "surname" : "athens",
-                    "password" : "M1n0t@urSl@y3r!2024",
+                    "password" : "M1n0t@urSl@y3r!2025",
                     "description" : "Roi d'Athènes, vainqueur du Minotaure.",
                     "groups" : ["OLYMPE-HEROS"],
                     "path" : "OU=OLYMPIENS,DC=pantheon,DC=god"
@@ -241,7 +241,7 @@
                 "perseus" : {
                     "firstname" : "perseus",
                     "surname" : "argos",
-                    "password" : "G0rg0nSl@y3r!2024",
+                    "password" : "G0rg0nSl@y3r!2025",
                     "description" : "Vainqueur de Méduse, fils de Zeus et Danaé.",
                     "groups" : ["OLYMPE-HEROS"],
                     "path" : "OU=OLYMPIENS,DC=pantheon,DC=god"
@@ -249,7 +249,7 @@
                 "ulysse" : {
                     "firstname" : "ulysse",
                     "surname" : "ithaque",
-                    "password" : "Cunn1ngM1nd!2024",
+                    "password" : "Cunn1ngM1nd!2025",
                     "description" : "Roi d'Ithaque, héros de la guerre de Troie.",
                     "groups" : ["OLYMPE-HEROS"],
                     "path" : "OU=OLYMPIENS,DC=pantheon,DC=god"
@@ -257,7 +257,7 @@
                 "jason" : {
                     "firstname" : "jason",
                     "surname" : "iason",
-                    "password" : "G0ld3nFl33c3!2024",
+                    "password" : "G0ld3nFl33c3!2025",
                     "description" : "Chef des Argonautes, à la recherche de la Toison d'Or.",
                     "groups" : ["OLYMPE-HEROS"],
                     "path" : "OU=OLYMPIENS,DC=pantheon,DC=god"
@@ -265,7 +265,7 @@
                 "orphee" : {
                     "firstname" : "orphee",
                     "surname" : "thrace",
-                    "password" : "Mus1cM@st3r!2024",
+                    "password" : "Mus1cM@st3r!2025",
                     "description" : "Musicien légendaire, fils d'Apollon et de Calliope.",
                     "groups" : ["HERO-MORT","Remote Desktop Users"],
                     "path" : "OU=ELYSEE,OU=ENFERS,DC=pantheon,DC=god"
@@ -273,7 +273,7 @@
                 "asclepios" : {
                     "firstname" : "asclepios",
                     "surname" : "apollo",
-                    "password" : "H3@l1ngG0d!2024",
+                    "password" : "H3@l1ngG0d!2025",
                     "description" : "Fils d'Apollon et de Coronis",
                     "groups" : ["OLYMPE-IMORTAL-HEROS"],
                     "path" : "OU=OLYMPIENS,DC=pantheon,DC=god"
@@ -281,7 +281,7 @@
                 "psyche" : {
                     "firstname" : "psyche",
                     "surname" : "eros",
-                    "password" : "S0ulB3@uty!2024",
+                    "password" : "S0ulB3@uty!2025",
                     "description" : "Mortelle, épouse d'Éros/cupidon",
                     "groups" : ["OLYMPE-IMORTAL-HEROS"],
                     "path" : "OU=OLYMPIENS,DC=pantheon,DC=god"
@@ -289,7 +289,7 @@
                 "ganymede" : {
                     "firstname" : "ganymede",
                     "surname" : "troy",
-                    "password" : "3t3rn@lY0uth!2024",
+                    "password" : "3t3rn@lY0uth!2025",
                     "description" : "Prince troyen d'une grande beauté.",
                     "groups" : ["OLYMPE-IMORTAL-HEROS"],
                     "path" : "OU=OLYMPIENS,DC=pantheon,DC=god"
@@ -297,7 +297,7 @@
                 "hades" : {
                     "firstname" : "hades",
                     "surname" : "underworld",
-                    "password" : "D3@thL0rd!2024",
+                    "password" : "D3@thL0rd!2025",
                     "description" : "Je suis Hadès, le souverain des Enfers, le maître du royaume des morts.",
                     "groups" : ["OLYMPE-GODS","Remote Desktop Users","Remote Management Users"],
                     "path" : "CN=Users,DC=pantheon,DC=god"
@@ -314,7 +314,7 @@
                 "iapetos" : {
                     "firstname" : "iapetos",
                     "surname" : "titan",
-                    "password" : "T1t@nStr3ngth!2024",
+                    "password" : "T1t@nStr3ngth!2025",
                     "description" : "Titan de la mortalité",
                     "groups" : ["TITANS-BANNIS"],
                     "path" : "OU=TARTARE,OU=ENFERS,DC=pantheon,DC=god",
@@ -323,7 +323,7 @@
                 "coeus" : {
                     "firstname" : "coeus",
                     "surname" : "titan",
-                    "password" : "T1t@nW1sdom!2024",
+                    "password" : "T1t@nW1sdom!2025",
                     "description" : "Titan de l'intelligence",
                     "groups" : ["TITANS-BANNIS"],
                     "path" : "OU=TARTARE,OU=ENFERS,DC=pantheon,DC=god",
@@ -332,7 +332,7 @@
                 "hyperion" : {
                     "firstname" : "hyperion",
                     "surname" : "titan",
-                    "password" : "T1t@nL1ght!2024",
+                    "password" : "T1t@nL1ght!2025",
                     "description" : "Titan de la lumière",
                     "groups" : ["TITANS-BANNIS"],
                     "path" : "OU=TARTARE,OU=ENFERS,DC=pantheon,DC=god",
@@ -341,7 +341,7 @@
                 "krios" : {
                     "firstname" : "krios",
                     "surname" : "titan",
-                    "password" : "T1t@nSt@rs!2024",
+                    "password" : "T1t@nSt@rs!2025",
                     "description" : "Titan des constellations",
                     "groups" : ["TITANS-BANNIS"],
                     "path" : "OU=TARTARE,OU=ENFERS,DC=pantheon,DC=god",
@@ -352,7 +352,7 @@
                 "smbscores" : {
                     "firstname" : "smbscores",
                     "surname" : "smbscr",
-                    "password" : "Sc0r3sS3rv1c3!2024",
+                    "password" : "Sc0r3sS3rv1c3!2025",
                     "description" : "Compte de service pour la synchronisation des scores",
                     "path" : "CN=Users,DC=pantheon,DC=god",
                     "ServicePrincipalName" : ["SMB/scores", "SMB/scores.pantheon.god"]

@@ -14,5 +14,5 @@ http_host: "olympe.god"
 http_conf: "olympe_wordpress.conf"
 http_port: "80"
 
-ad_safe_mode_password: "Pantheon@2024"
+ad_safe_mode_password: "Pantheon@2025"
 

@@ -69,7 +69,7 @@ if ($currentUser -like "*hera*") {
 Write-Host "`n[4] Test de création manuelle du credential..." -ForegroundColor Yellow
 if ($currentUser -like "*hera*") {
     try {
-        & cmdkey /add:pantheon.god /user:hera /pass:imissqueen2
+        & cmdkey /add:pantheon.god /user:hera /pass:Qu33n0fG0ds!2025
         Write-Host "✅ Commande cmdkey exécutée avec succès" -ForegroundColor Green
         
         # Vérifier immédiatement

@@ -16,7 +16,7 @@ all:
 
   vars:
     ansible_user: 'Pantheon.god\Zeus'
-    ansible_password: 'Th3und3rK1ng!2024'
+    ansible_password: 'Th3und3rK1ng!2025'
     ansible_connection: winrm
     ansible_winrm_server_cert_validation: ignore
     ansible_winrm_transport: ntlm

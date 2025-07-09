@@ -174,7 +174,7 @@ Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Lsa" -Name Disabl
 
 #DPAPI
 # Crée une paire masterkey/credential
-cmdkey /add:pantheon.god /user:hades /pass:"D3@thL0rd!2024"
+cmdkey /add:pantheon.god /user:hades /pass:"D3@thL0rd!2025"
 
 # Vérifier la présence de cred et d'une masterkey
 ls "$env:APPDATA\Microsoft\Credentials" -Fo
