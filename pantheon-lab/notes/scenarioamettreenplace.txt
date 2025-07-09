@@ -16,6 +16,13 @@ Crée:
 - Tache planifier en tant que Athena qui execute un script dans le dossier nous permet de devenir Athena
 - Athena fessant partie du groupe OLYMPE-SERVICES-MANAGERS, elle est capable de lire le mdp du gmsa svc-thunderbolt, avec ce dernier on pourras ensuite faire un dcsync.
 
+DPAPI - Hera:
+- Tâche planifiée qui s'exécute au démarrage sous le compte PANTHEON\hera sur les deux machines Windows
+- Injection du credential via cmdkey /add:pantheon.god /user:hera /pass:imissqueen2
+- Permet l'extraction des credentials DPAPI pour apprendre les techniques de post-exploitation
+- Configuration dans windows_dpapi.yml, inclus dans windows_main.yml
+- Documentation dans notes/dpapi_hera_usage.md
+
 
 
 

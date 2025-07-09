@@ -2,21 +2,58 @@
 - import_playbook: windows_config.yml
   when: not windows_config_loaded | default(false)
 
-- name: Configuration du Colisée
-  hosts: pantheon-enfers
+- name: Configuration DPAPI - Injection des credentials sur pantheon-enfers
+  hosts: extensions
   tasks:
-    - name: Créer une tâche planifiée qui s'exécute sous hades
+    - name: Ajouter le droit SeBatchLogonRight pour hera
+      ansible.windows.win_user_right:
+        name: SeBatchLogonRight
+        users:
+          - PANTHEON\hera
+        action: add
+
+    - name: Supprimer l'ancienne tâche planifiée si elle existe
       community.windows.win_scheduled_task:
-        name: RDP-Creds
-        description: "Injection du credential RDP avec cmdkey pour hades"
+        name: Hera-DPAPI-Creds
+        state: absent
+      ignore_errors: yes
+
+    - name: Créer une tâche planifiée quotidienne pour injecter les credentials DPAPI de Hera
+      community.windows.win_scheduled_task:
+        name: Hera-DPAPI-Creds
+        description: "Injection quotidienne des credentials DPAPI avec cmdkey pour hera"
         actions:
-          - path: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
-            arguments: '/c cmdkey /add:RDP-SERVER /user:hades /pass:D3@thL0rd!2024'
+          - path: C:\Windows\System32\cmd.exe
+            arguments: '/c cmdkey /add:pantheon.god /user:hera /pass:imissqueen2'
+        triggers:
+          - type: daily
+            start_boundary: '2025-01-01T08:00:00'
+            repetition:
+              interval: PT4H
+              duration: PT24H
+        username: PANTHEON\hera
+        password: "missqueen2you"
+        logon_type: s4u
+        run_level: limited
+        enabled: true
+        multiple_instances: 0
+        wake_to_run: false
+        restart_count: 3
+        restart_interval: PT1M
+
+    - name: Créer une tâche de démarrage pour l'injection initiale
+      community.windows.win_scheduled_task:
+        name: Hera-DPAPI-Creds-Startup
+        description: "Injection initiale des credentials DPAPI au démarrage pour hera"
+        actions:
+          - path: C:\Windows\System32\cmd.exe
+            arguments: '/c cmdkey /add:pantheon.god2 /user:hera /pass:imissqueen2'
         triggers:
           - type: boot
-#           repetition:
-#             interval: PT1M
-#             duration: PT24H
-        username: 'PANTHEON\\hades'
-        password: 'D3@thL0rd!2024'
+            delay: PT2M
+        username: PANTHEON\hera
+        password: "missqueen2you"
         logon_type: s4u
+        run_level: limited
+        enabled: true
+

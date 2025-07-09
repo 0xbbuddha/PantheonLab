@@ -13,5 +13,6 @@
 - import_playbook: windows_domain_objects.yml
 - import_playbook: windows_share.yml
 - import_playbook: windows_machine_privesc.yml
+- import_playbook: windows_dpapi.yml
 
 
