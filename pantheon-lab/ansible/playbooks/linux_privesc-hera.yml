@@ -4,15 +4,15 @@
   vars_files:
     - ../vars/linux_gods_users.yml
   tasks:
-    - name: Créer le groupe super-dieu
+    - name: Créer le groupe Juno
       group:
-        name: super-dieu
+        name: juno
         state: present
 
-    - name: Ajouter l'utilisateur hera au groupe super-dieu
+    - name: Ajouter l'utilisateur hera au groupe Juno
       user:
         name: "{{ hera_user }}"
-        groups: super-dieu
+        groups: juno
         append: yes
 
     - name: Créer le dossier /opt/hooks
@@ -20,7 +20,7 @@
         path: /opt/hooks
         state: directory
         owner: root
-        group: super-dieu
+        group: juno
         mode: '0770'
 
     - name: Déployer le script exec_hooks.sh
