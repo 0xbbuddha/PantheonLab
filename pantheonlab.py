@@ -12,6 +12,7 @@ import threading
 from rich.live import Live
 import readline
 import shutil
+import signal
 console = Console()
 
 # ASCII Art pour PantheonLab
@@ -25,6 +26,7 @@ ASCII_ART = """
 """
 
 EXPECTED_VM_COUNT = 3  # Nombre de VMs attendues pour le lab
+DEBUG = '--debug' in sys.argv
 
 def print_header():
     """Affiche l'en-tête avec l'ASCII art"""
@@ -33,7 +35,7 @@ def print_header():
     console.print()
 
 def check_dependencies():
-    """Vérifie les dépendances en exécutant le script shell avec animation spinner"""
+    """Vérifie les dépendances en exécutant le script shell avec animation spinner et gestion CTRL+C"""
     console.print("[+] Vérification des dépendances...", style="cyan")
     with Progress(
         SpinnerColumn(style="orange3"),
@@ -43,14 +45,21 @@ def check_dependencies():
     ) as progress:
         task = progress.add_task("Vérification des dépendances...", total=None)
         try:
-            result = subprocess.run(['./check_requirements.sh'], capture_output=True, text=True)
+            proc = subprocess.Popen(['./check_requirements.sh'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=os.setsid)
+            try:
+                stdout, stderr = proc.communicate()
+            except KeyboardInterrupt:
+                os.killpg(os.getpgid(proc.pid), signal.SIGINT)
+                progress.update(task, completed=True)
+                console.print("[-] Vérification interrompue par l'utilisateur.", style="yellow")
+                return False
             progress.update(task, completed=True)
-            if result.returncode == 0:
+            if proc.returncode == 0:
                 console.print("[+] Dépendances installées avec succès.", style="green")
                 return True
             else:
                 console.print("[-] Dépendances manquantes:", style="red")
-                console.print(result.stdout, style="navajo_white1")
+                console.print(stdout.decode(), style="navajo_white1")
                 return False
         except Exception as e:
             progress.update(task, completed=True)
@@ -58,36 +67,59 @@ def check_dependencies():
             return False
 
 def launch_lab():
-    """Lance le lab en exécutant la commande 'cd pantheon-lab; ./pantheonv2.sh' avec spinner"""
+    """Lance le lab en exécutant la commande 'cd pantheon-lab; ./pantheonv2.sh' avec gestion CTRL+C"""
     console.print("[+] Lancement du lab PantheonLab...", style="cyan")
     confirm = input("Confirmer le lancement des VMs? (O/n): ").strip().lower()
     if confirm in ['n', 'no', 'non']:
         console.print("[-] Lancement annulé.", style="red")
         return False
     try:
-        with Progress(
-            SpinnerColumn(style="orange3"),
-            TextColumn("[navajo_white1]Démarrage des machines virtuelles...[/navajo_white1]"),
-            console=console,
-            transient=True
-        ) as progress:
-            task = progress.add_task("Démarrage des machines virtuelles...", total=None)
-            result = subprocess.run('cd pantheon-lab; ./pantheonv2.sh', shell=True, capture_output=True, text=True)
-            progress.update(task, completed=True)
-            if result.returncode == 0:
+        if DEBUG:
+            proc = subprocess.Popen('cd pantheon-lab; ./pantheonv2.sh', shell=True, preexec_fn=os.setsid)
+            try:
+                proc.wait()
+            except KeyboardInterrupt:
+                os.killpg(os.getpgid(proc.pid), signal.SIGINT)
+                console.print("[-] Création du lab interrompue par l'utilisateur.", style="yellow")
+                return False
+            if proc.returncode == 0:
                 console.print("[+] Lab lancé avec succès.", style="green")
                 console.print("[+] Les machines virtuelles sont en cours de démarrage.", style="green")
                 return True
             else:
                 console.print("[-] Erreur lors du lancement du lab:", style="red")
-                console.print(result.stderr, style="navajo_white1")
                 return False
+        else:
+            with Progress(
+                SpinnerColumn(style="orange3"),
+                TextColumn("[navajo_white1]Démarrage des machines virtuelles...[/navajo_white1]"),
+                console=console,
+                transient=True
+            ) as progress:
+                task = progress.add_task("Démarrage des machines virtuelles...", total=None)
+                with open(os.devnull, 'w') as devnull:
+                    proc = subprocess.Popen('cd pantheon-lab; ./pantheonv2.sh', shell=True, stdout=devnull, stderr=devnull, preexec_fn=os.setsid)
+                    try:
+                        proc.wait()
+                    except KeyboardInterrupt:
+                        os.killpg(os.getpgid(proc.pid), signal.SIGINT)
+                        progress.update(task, completed=True)
+                        console.print("[-] Création du lab interrompue par l'utilisateur.", style="yellow")
+                        return False
+                progress.update(task, completed=True)
+                if proc.returncode == 0:
+                    console.print("[+] Lab lancé avec succès.", style="green")
+                    console.print("[+] Les machines virtuelles sont en cours de démarrage.", style="green")
+                    return True
+                else:
+                    console.print("[-] Erreur lors du lancement du lab:", style="red")
+                    return False
     except Exception as e:
         console.print(f"[-] Erreur lors du lancement: {str(e)}", style="red")
         return False
 
 def show_global_status():
-    """Affiche le status global des VMs Vagrant avec un joli tableau et une animation spinner"""
+    """Affiche le status global des VMs Vagrant avec un joli tableau et une animation spinner, gestion CTRL+C"""
     console.print("[+] Statut global des VMs (vagrant global-status)", style="cyan")
     with Progress(
         SpinnerColumn(style="orange3"),
@@ -97,18 +129,23 @@ def show_global_status():
     ) as progress:
         task = progress.add_task("Récupération du status global des VMs...", total=None)
         try:
-            result = subprocess.run(['vagrant', 'global-status', '--prune'], capture_output=True, text=True)
-            progress.update(task, completed=True)
-            if result.returncode != 0:
-                console.print("[-] Erreur lors de l'exécution de vagrant global-status", style="red")
-                console.print(result.stderr, style="navajo_white1")
+            proc = subprocess.Popen(['vagrant', 'global-status', '--prune'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=os.setsid)
+            try:
+                stdout, stderr = proc.communicate()
+            except KeyboardInterrupt:
+                os.killpg(os.getpgid(proc.pid), signal.SIGINT)
+                progress.update(task, completed=True)
+                console.print("[-] Récupération du status interrompue par l'utilisateur.", style="yellow")
                 return
-            lines = result.stdout.splitlines()
-            # Cas où il n'y a aucune VM : Vagrant affiche un message d'information
+            progress.update(task, completed=True)
+            if proc.returncode != 0:
+                console.print("[-] Erreur lors de l'exécution de vagrant global-status", style="red")
+                console.print(stderr.decode(), style="navajo_white1")
+                return
+            lines = stdout.decode().splitlines()
             if any('There are no active Vagrant environments' in line for line in lines):
                 console.print("Aucune VM Vagrant trouvée.", style="red")
                 return
-            # Chercher la ligne d'entête et les données
             header_idx = None
             for i, line in enumerate(lines):
                 if line.strip().startswith('id') and 'directory' in line:
@@ -117,17 +154,14 @@ def show_global_status():
             if header_idx is None:
                 console.print("[-] Impossible de parser la sortie de vagrant global-status", style="red")
                 return
-            # Les données sont entre header_idx+1 et la première ligne vide après
             data_lines = []
             for line in lines[header_idx+1:]:
                 if not line.strip():
                     break
                 data_lines.append(line)
-            # Si les données ressemblent à un message d'information (pas de VM)
             if data_lines and data_lines[0].startswith('There'):
                 console.print("Aucune VM Vagrant trouvée.", style="red")
                 return
-            # Création du tableau
             table = Table(title="Vagrant Global Status", show_lines=True)
             table.add_column("ID", style="bold")
             table.add_column("Name", style="navajo_white1")
@@ -135,12 +169,10 @@ def show_global_status():
             table.add_column("State", style="bold")
             table.add_column("Directory", style="cyan")
             for line in data_lines:
-                # Les colonnes sont séparées par des espaces, mais le path peut contenir des espaces
                 parts = line.split(None, 4)
                 if len(parts) < 5:
                     continue
                 id_, name, provider, state, directory = parts
-                # Couleur selon l'état
                 if state == 'running':
                     state_style = '[green]running[/green]'
                 elif state == 'poweroff':
@@ -181,34 +213,41 @@ def show_help():
     console.print("[*] Note: Assurez-vous d'avoir suffisamment d'espace disque et de RAM.", style="red")
 
 def check_lab_installed():
-    """Vérifie si le lab est installé en regardant le dossier .vagrant/machines (2 niveaux, 3 sous-dossiers non vides)"""
+    """Vérifie si le lab est installé en regardant le dossier .vagrant/machines (3 machines, non vides, pas juste vagrant_cwd)"""
     base_path = os.path.join('pantheon-lab', 'vagrant', '.vagrant', 'machines')
     if not os.path.isdir(base_path):
-        console.print("[red]STATUS : LAB NON INSTALLE[/red]")
+        console.print(f"[red]STATUS : LAB NON INSTALLE (0/{EXPECTED_VM_COUNT} VM(s) détectées)[/red]")
+        return False
+    vm_names = [d for d in os.listdir(base_path) if os.path.isdir(os.path.join(base_path, d))]
+    if not vm_names:
+        console.print(f"[red]STATUS : LAB NON INSTALLE (0/{EXPECTED_VM_COUNT} VM(s) détectées)[/red]")
         return False
     count = 0
-    for vm_name in os.listdir(base_path):
+    for vm_name in vm_names:
         vm_path = os.path.join(base_path, vm_name)
-        if os.path.isdir(vm_path):
-            # Cherche un sous-dossier non vide (provider)
-            subdirs = [d for d in os.listdir(vm_path) if os.path.isdir(os.path.join(vm_path, d))]
-            found_non_empty = False
-            for sub in subdirs:
-                sub_path = os.path.join(vm_path, sub)
-                if os.listdir(sub_path):
-                    found_non_empty = True
-                    break
-            if found_non_empty:
-                count += 1
-    if count == 3:
+        subdirs = [d for d in os.listdir(vm_path) if os.path.isdir(os.path.join(vm_path, d))]
+        found_valid = False
+        for sub in subdirs:
+            sub_path = os.path.join(vm_path, sub)
+            files = os.listdir(sub_path)
+            if not files:
+                continue  # sous-dossier vide
+            # Si le seul fichier est vagrant_cwd, ce n'est pas valide
+            if len(files) == 1 and files[0] == 'vagrant_cwd':
+                continue
+            found_valid = True
+            break
+        if found_valid:
+            count += 1
+    if count == EXPECTED_VM_COUNT:
         console.print("[green]STATUS : LAB INSTALLE[/green]")
         return True
     else:
-        console.print(f"[red]STATUS : LAB NON INSTALLE ({count}/3 VM(s) détectées)[/red]")
+        console.print(f"[red]STATUS : LAB NON INSTALLE ({count}/{EXPECTED_VM_COUNT} VM(s) détectées)[/red]")
         return False
 
 def destroy_lab():
-    """Détruit toutes les VMs du lab via vagrant destroy -f dans pantheon-lab/vagrant/ avec spinner"""
+    """Détruit toutes les VMs du lab via vagrant destroy -f dans pantheon-lab/vagrant/ avec spinner et gestion CTRL+C"""
     confirm = input("Êtes-vous sûr de vouloir détruire toutes les VMs du lab ? (o/N): ").strip().lower()
     if confirm not in ["o", "oui", "y", "yes"]:
         console.print("[+] Destruction annulée.", style="yellow")
@@ -221,14 +260,21 @@ def destroy_lab():
             transient=True
         ) as progress:
             task = progress.add_task("Destruction du lab en cours...", total=None)
-            result = subprocess.run(['vagrant', 'destroy', '-f'], cwd='pantheon-lab/vagrant/', capture_output=True, text=True)
+            proc = subprocess.Popen(['vagrant', 'destroy', '-f'], cwd='pantheon-lab/vagrant/', stdout=subprocess.PIPE, stderr=subprocess.PIPE, preexec_fn=os.setsid)
+            try:
+                stdout, stderr = proc.communicate()
+            except KeyboardInterrupt:
+                os.killpg(os.getpgid(proc.pid), signal.SIGINT)
+                progress.update(task, completed=True)
+                console.print("[-] Destruction interrompue par l'utilisateur.", style="yellow")
+                return
             progress.update(task, completed=True)
-            if result.returncode == 0:
+            if proc.returncode == 0:
                 console.print("[+] Lab détruit avec succès.", style="green")
-                console.print(result.stdout, style="navajo_white1")
+                console.print(stdout.decode(), style="navajo_white1")
             else:
                 console.print("[-] Erreur lors de la destruction du lab.", style="red")
-                console.print(result.stderr, style="navajo_white1")
+                console.print(stderr.decode(), style="navajo_white1")
     except Exception as e:
         console.print(f"[-] Exception lors de la destruction : {str(e)}", style="red")
 
@@ -249,7 +295,7 @@ def main():
         console.print("[+] [navajo_white1]2.[/] Lancer le lab", style="navajo_white1")
         console.print("[+] [navajo_white1]3.[/] Statut global des VMs", style="navajo_white1")
         console.print("[+] [navajo_white1]4.[/] Détruire le lab", style="navajo_white1")
-        console.print("[+] [navajo_white1]5.[/] Aide", style="navajo_white1")
+        console.print("[+] [navajo_white1]5.[/] Aide", style="navajo_white1")   
         console.print("[+] [navajo_white1]q.[/] Quitter", style="navajo_white1")
         console.print()
         # Choix de l'utilisateur

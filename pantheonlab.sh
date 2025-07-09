@@ -17,7 +17,11 @@ if [ -t 1 ]; then
         echo "[+] L'environnement virtuel .venv existe déjà."
         echo "[+] Lancement de l'interface PantheonLab..."
         source .venv/bin/activate
+        if [ $DEBUG -eq 1 ]; then
+        python3 pantheonlab.py --debug
+    else
         python3 pantheonlab.py
+    fi
         exit 0
     fi
     # Mode interactif : création du venv et install pip/ansible
@@ -53,7 +57,11 @@ if [ -t 1 ]; then
 
     # Lancer l'interface Python après installation
     echo "[+] Lancement de l'interface PantheonLab..."
-    python3 pantheonlab.py
+    if [ $DEBUG -eq 1 ]; then
+        python3 pantheonlab.py --debug
+    else
+        python3 pantheonlab.py
+    fi
     deactivate
     exit 0
 fi 
