@@ -16,6 +16,7 @@ if [ -t 1 ]; then
     if [ -d ".venv" ]; then
         echo "[+] L'environnement virtuel .venv existe déjà."
         echo "[+] Lancement de l'interface PantheonLab..."
+        source .venv/bin/activate
         python3 pantheonlab.py
         exit 0
     fi
