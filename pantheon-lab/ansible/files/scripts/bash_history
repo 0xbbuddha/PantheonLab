@@ -1,10 +1,25 @@
 cd ~
-mkdir work
-cd work
-nano notes.txt
+mkdir mont_olympe
+cd mont_olympe
+echo "Invocation d'Hadès pour les logs" > hades.log
+nano artemis_script.sh
 sudo apt update
 sudo apt install gpg -y
+gpg --gen-key
 gpg --symmetric
+# 🔐 incantation sacrée à ne pas oublier
 M0n@mourP0urZ3u$!2025
 clear
+ls -la | grep poseidon
+echo "Clé secrète d'Athéna dans le fichier crypté" >> athena_secrets.txt
+gpg --encrypt --recipient zeus athena_secrets.txt
+mkdir chronos_backup
+mv *.gpg chronos_backup/
+touch hermes_memo.txt
+echo "Hermès dit : ne jamais oublier le mot de passe." > hermes_memo.txt
+nano hermes_memo.txt
+gpg --decrypt chronos_backup/athena_secrets.txt.gpg
+sudo adduser dionysos
+sudo usermod -aG sudo dionysos
+echo "Appel de Zeus pour les privilèges élevés" >> z_privesc.txt
 history | grep gpg
