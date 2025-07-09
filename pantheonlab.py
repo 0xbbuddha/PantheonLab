@@ -240,10 +240,10 @@ def check_lab_installed():
         if found_valid:
             count += 1
     if count == EXPECTED_VM_COUNT:
-        console.print("[green]STATUS : LAB INSTALLE[/green]")
+        console.print("[green]STATUS : LAB INSTALLÉ[/green]")
         return True
     else:
-        console.print(f"[red]STATUS : LAB NON INSTALLE ({count}/{EXPECTED_VM_COUNT} VM(s) détectées)[/red]")
+        console.print(f"[red]STATUS : LAB NON INSTALLÉ ({count}/{EXPECTED_VM_COUNT} VM(s) détectées)[/red]")
         return False
 
 def destroy_lab():
