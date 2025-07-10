@@ -2,7 +2,7 @@ okeanos_users:
   - name: poseidon
     password: "poseidon123*"
   - name: trident
-    password: "trident123*"
+    password: ""
     shell: /bin/swim
     expires: 1688169600
   - name: triton
