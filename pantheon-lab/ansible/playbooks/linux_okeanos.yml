@@ -66,6 +66,13 @@
         owner: triton
         group: triton
 
+    - name: Message to poseidon
+      copy:
+        src: /home/vagrant/ansible/files/scripts/message_for_poseidon
+        dest: /home/poseidon/.message
+        owner: poseidon
+        group: poseidon
+
     - name: Jump to trident
       copy:
         src: /home/vagrant/ansible/files/scripts/swim
@@ -134,7 +141,9 @@
       copy:
         dest: /etc/sudoers.d/poseidon_root
         content: |
-          poseidon ALL=(ALL) NOPASSWD: ALL
+          poseidon ALL=(ALL) NOPASSWD: /bin/nano /root/.ssh/authorized_keys
+        owner: root
+        group: root
         mode: '0440'
 
     - name: Remove root from all sudoers.d entries
