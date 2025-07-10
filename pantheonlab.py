@@ -13,6 +13,7 @@ from rich.live import Live
 import readline
 import shutil
 import signal
+import re
 console = Console()
 
 # ASCII Art pour PantheonLab
@@ -25,7 +26,6 @@ ASCII_ART = """
 ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝   ╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═════╝ 
 """
 
-EXPECTED_VM_COUNT = 3  # Nombre de VMs attendues pour le lab
 DEBUG = '--debug' in sys.argv
 
 def print_header():
@@ -216,11 +216,11 @@ def check_lab_installed():
     """Vérifie si le lab est installé en regardant le dossier .vagrant/machines (3 machines, non vides, pas juste vagrant_cwd)"""
     base_path = os.path.join('pantheon-lab', 'vagrant', '.vagrant', 'machines')
     if not os.path.isdir(base_path):
-        console.print(f"[red]STATUS : LAB NON INSTALLE (0/{EXPECTED_VM_COUNT} VM(s) détectées)[/red]")
+        console.print(f"[red]STATUS : LAB NON INSTALLE (0/{get_expected_vm_count()} VM(s) détectées)[/red]")
         return False
     vm_names = [d for d in os.listdir(base_path) if os.path.isdir(os.path.join(base_path, d))]
     if not vm_names:
-        console.print(f"[red]STATUS : LAB NON INSTALLE (0/{EXPECTED_VM_COUNT} VM(s) détectées)[/red]")
+        console.print(f"[red]STATUS : LAB NON INSTALLE (0/{get_expected_vm_count()} VM(s) détectées)[/red]")
         return False
     count = 0
     for vm_name in vm_names:
@@ -239,11 +239,11 @@ def check_lab_installed():
             break
         if found_valid:
             count += 1
-    if count == EXPECTED_VM_COUNT:
+    if count == get_expected_vm_count():
         console.print("[green]STATUS : LAB INSTALLÉ[/green]")
         return True
     else:
-        console.print(f"[red]STATUS : LAB NON INSTALLÉ ({count}/{EXPECTED_VM_COUNT} VM(s) détectées)[/red]")
+        console.print(f"[red]STATUS : LAB NON INSTALLÉ ({count}/{get_expected_vm_count()} VM(s) détectées)[/red]")
         return False
 
 def destroy_lab():
@@ -277,6 +277,18 @@ def destroy_lab():
                 console.print(stderr.decode(), style="navajo_white1")
     except Exception as e:
         console.print(f"[-] Exception lors de la destruction : {str(e)}", style="red")
+
+def get_expected_vm_count(vagrantfile_path="pantheon-lab/vagrant/Vagrantfile"):
+    """Compte dynamiquement le nombre de VM définies dans le Vagrantfile."""
+    try:
+        with open(vagrantfile_path, "r") as f:
+            content = f.read()
+        # Compte les occurrences de config.vm.define "NOM"
+        vm_count = len(re.findall(r'config\.vm\.define\s+["\"][^"\']+["\"]', content))
+        return vm_count
+    except Exception as e:
+        console.print(f"[red]Erreur lors de la lecture du Vagrantfile: {e}[/red]")
+        return 0
 
 def main():
     """Fonction principale avec menu minimaliste"""
