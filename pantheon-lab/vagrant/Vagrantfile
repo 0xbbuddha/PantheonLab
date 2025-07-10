@@ -81,4 +81,42 @@ Vagrant.configure("2") do |config|
       }
     end
   end
+  # VM Okeanos (Linux)
+  config.vm.define "pantheon-okeanos" do |okeanos|
+    okeanos.vm.box = "hashicorp/bionic64"
+    okeanos.vm.hostname = "pantheon-okeanos"
+    okeanos.vm.network "private_network", ip: "192.168.56.15"
+    okeanos.vm.synced_folder "../ansible", "/home/vagrant/ansible"
+    okeanos.vm.provision "shell", inline: <<-SHELL
+      sudo apt-get update
+      sudo apt-get install -y software-properties-common
+      sudo add-apt-repository -y ppa:deadsnakes/ppa
+      sudo apt-get update
+      sudo apt-get install -y python3.8 python3.8-distutils
+      sudo apt-get install -y python3-apt
+      sudo mkdir -p /usr/lib/python3.8/dist-packages
+      sudo ln -sf /usr/lib/python3/dist-packages/apt_pkg.cpython-36m-x86_64-linux-gnu.so /usr/lib/python3.8/dist-packages/apt_pkg.cpython-38-x86_64-linux-gnu.so
+      sudo ln -sf /usr/lib/python3/dist-packages/apt_inst.cpython-36m-x86_64-linux-gnu.so /usr/lib/python3.8/dist-packages/apt_inst.cpython-38-x86_64-linux-gnu.so
+      sudo ln -sf /usr/lib/python3/dist-packages/apt /usr/lib/python3.8/dist-packages/apt
+      sudo locale-gen fr_FR.UTF-8
+      sudo update-locale LANG=fr_FR.UTF-8 LC_ALL=fr_FR.UTF-8
+      echo "export LANG=fr_FR.UTF-8" | sudo tee -a /etc/profile
+      echo "export LC_ALL=fr_FR.UTF-8" | sudo tee -a /etc/profile
+    SHELL
+
+    okeanos.vm.provider "virtualbox" do |vb|
+      vb.memory = "2048"
+      vb.cpus = 2
+      vb.name = "okeanos"
+      vb.linked_clone = true
+    end
+
+    okeanos.vm.provision "ansible_local" do |ansible|
+      ansible.playbook = "/home/vagrant/ansible/playbooks/linux_okeanos.yml"
+      ansible.compatibility_mode = "2.0"
+      ansible.extra_vars = {
+        ansible_python_interpreter: "/usr/bin/python3"
+      }
+    end
+  end
 end 

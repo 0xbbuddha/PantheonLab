@@ -1,0 +1,150 @@
+- name: Setup machine Okeanos
+  hosts: pantheon-okeanos
+  become: true
+  vars_files:
+    - /home/vagrant/ansible/vars/linux_okeanos.yml
+
+  tasks:
+
+    - name: Create users
+      user:
+        name: "{{ item.name }}"
+        shell: "{{ item.shell | default('/bin/bash') }}"
+        create_home: yes
+        password: "{{ item.password | password_hash('sha512') }}"
+        expires: "{{ item.expires | default(omit) }}"
+
+      loop: "{{ okeanos_users }}"
+
+    - name: Add SSH public key to triton
+      authorized_key:
+        user: triton
+        key: "{{ lookup('file', '/home/vagrant/ansible/files/ssh/id_rsa_triton.pub') }}"
+
+    - name: Copy SSH private key to triton
+      copy:
+        src: /home/vagrant/ansible/files/ssh/id_ed25519_trident
+        dest: /home/triton/.ssh/id_ed25519
+        owner: triton
+        group: triton
+        mode: '0600'
+
+    - name: Add SSH public key to trident
+      authorized_key:
+        user: trident
+        key: "{{ lookup('file', '/home/vagrant/ansible/files/ssh/id_ed25519_trident.pub') }}"
+
+    - name: Copy SSH private key to trident
+      copy:
+        src: /home/vagrant/ansible/files/ssh/id_rsa_poseidon
+        dest: /home/trident/.ssh/id_rsa
+        owner: trident
+        group: trident
+        mode: '0600'
+
+    - name: Add SSH public key to poseidon
+      authorized_key:
+        user: poseidon
+        key: "{{ lookup('file', '/home/vagrant/ansible/files/ssh/id_rsa_poseidon.pub') }}"
+
+    - name: Allow triton to run chage on trident via sudo without password
+      copy:
+        dest: /etc/sudoers.d/triton_chage
+        content: "triton ALL=(ALL) NOPASSWD: /usr/bin/chage\n"
+        mode: '0440'
+  
+    - name: Allow Poseidon
+      copy:
+        dest: /etc/sudoers.d/poseidon_all
+        content: "poseidon ALL=(ALL:ALL) ALL"
+        mode: '0440'
+
+    - name: Message to triton
+      copy:
+        src: /home/vagrant/ansible/files/scripts/message
+        dest: /home/triton/.message
+        owner: triton
+        group: triton
+
+    - name: Jump to trident
+      copy:
+        src: /home/vagrant/ansible/files/scripts/swim
+        dest: /bin/swim
+        owner: trident
+        group: trident
+        mode: '0700'
+
+    - name: Disable interactive shell for root
+      user:
+        name: root
+        shell: /usr/sbin/nologin
+
+    - name: Ensure /root/.ssh exists
+      file:
+        path: /root/.ssh
+        state: directory
+        owner: root
+        group: root
+        mode: '0700'
+
+    - name: Copy SSH private key to trident
+      copy:
+        src: /home/vagrant/ansible/files/ssh/id_rsa_root
+        dest: /home/poseidon/.ssh/id_rsa
+        owner: poseidon
+        group: poseidon
+        mode: '0600'
+
+    - name: Add SSH public key to root
+      authorized_key:
+        user: root
+        key: "{{ lookup('file', '/home/vagrant/ansible/files/ssh/id_rsa_root.pub') }}"
+
+    - name: Harden permissions on /root/.ssh and authorized_keys
+      file:
+        path: "{{ item.path }}"
+        owner: root
+        group: root
+        mode: "{{ item.mode }}"
+      loop:
+        - { path: /root/.ssh, mode: '0700' }
+        - { path: /root/.ssh/authorized_keys, mode: '0600' }
+
+    - name: Allow root login only with forced commands
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PermitRootLogin'
+        line: 'PermitRootLogin forced-commands-only'
+        state: present
+        backup: yes
+
+    - name: Ensure public key auth is enabled
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PubkeyAuthentication'
+        line: 'PubkeyAuthentication yes'
+        state: present
+
+    - name: Restart SSH service to apply changes
+      service:
+        name: ssh
+        state: restarted
+
+    - name: Allow poseidon sudo access to all commands
+      copy:
+        dest: /etc/sudoers.d/poseidon_root
+        content: |
+          poseidon ALL=(ALL) NOPASSWD: ALL
+        mode: '0440'
+
+    - name: Remove root from all sudoers.d entries
+      shell: "find /etc/sudoers.d -type f -exec sed -i '/^root/d' {} +"
+      args:
+        warn: false
+
+    - name: Remove root sudo access from /etc/sudoers if present
+      lineinfile:
+        path: /etc/sudoers
+        regexp: '^root\s+ALL='
+        state: absent
+        validate: '/usr/sbin/visudo -cf %s'
