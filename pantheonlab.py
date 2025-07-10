@@ -334,6 +334,7 @@ def main():
             input("[?] Appuyez sur Entrée pour continuer...")
             continue
         elif choice == "q":
+            os.system("pkill ruby")
             console.print("[+] Au revoir!", style="green")
             break
         else:
@@ -345,5 +346,6 @@ if __name__ == "__main__":
     try:
         main()
     except KeyboardInterrupt:
+        os.system("pkill ruby")
         console.print("\n[+] Au revoir!", style="green")
         sys.exit(0) 
