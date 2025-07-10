@@ -27,4 +27,8 @@ all:
       ansible_python_interpreter: /usr/bin/python3.8
       ansible_become: yes
       ansible_become_method: sudo
-      ansible_compatibility_mode: "2.0" 
+      ansible_compatibility_mode: "2.0"
+    okeanos:
+      hosts:
+        192.168.56.15
+
