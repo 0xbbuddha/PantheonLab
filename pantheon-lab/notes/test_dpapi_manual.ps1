@@ -20,7 +20,7 @@ try {
 Write-Host "`n[2] Test d'authentification..." -ForegroundColor Yellow
 try {
     $username = "PANTHEON\hera"
-    $password = "missqueen2you"
+    $password = "Qu33n0fG0ds!2025"
     $securePassword = ConvertTo-SecureString $password -AsPlainText -Force
     $credential = New-Object System.Management.Automation.PSCredential($username, $securePassword)
     
@@ -67,7 +67,7 @@ try {
     $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
     $principal = New-ScheduledTaskPrincipal -UserId "PANTHEON\hera" -LogonType Password
     
-    Register-ScheduledTask -TaskName "Test-Hera-Simple" -Action $action -Trigger $trigger -Settings $settings -Principal $principal -Password "missqueen2you"
+    Register-ScheduledTask -TaskName "Test-Hera-Simple" -Action $action -Trigger $trigger -Settings $settings -Principal $principal -Password "Qu33n0fG0ds!2025"
     
     Write-Host "✅ Tâche de test créée" -ForegroundColor Green
     
@@ -122,7 +122,7 @@ try {
     $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
     $principal = New-ScheduledTaskPrincipal -UserId "PANTHEON\hera" -LogonType Password
     
-    Register-ScheduledTask -TaskName "Test-Hera-PowerShell" -Action $action -Trigger $trigger -Settings $settings -Principal $principal -Password "missqueen2you"
+    Register-ScheduledTask -TaskName "Test-Hera-PowerShell" -Action $action -Trigger $trigger -Settings $settings -Principal $principal -Password "Qu33n0fG0ds!2025"
     
     # Démarrer la tâche
     Start-ScheduledTask -TaskName "Test-Hera-PowerShell"

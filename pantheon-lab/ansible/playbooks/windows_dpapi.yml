@@ -3,7 +3,7 @@
   when: not windows_config_loaded | default(false)
 
 - name: Configuration DPAPI - Injection des credentials sur pantheon-enfers
-  hosts: extensions
+  hosts: pantheon-dc01
   tasks:
     - name: Ajouter le droit SeBatchLogonRight pour hera
       ansible.windows.win_user_right:
@@ -32,7 +32,7 @@
               interval: PT1M
               duration: PT24H
         username: PANTHEON\hera
-        password: "missqueen2you"
+        password: "Qu33n0fG0ds!2025"
         logon_type: s4u
         enabled: true
         multiple_instances: 0

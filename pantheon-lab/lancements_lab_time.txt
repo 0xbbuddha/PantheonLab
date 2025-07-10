@@ -390,7 +390,7 @@ ok: [olympe-wordpress]
 
 TASK [Créer les utilisateurs dieux sur Linux] **********************************
 changed: [olympe-wordpress] => (item={u'password': u'dsfdfZ3us!2025@Pantheon', u'name': u'Zeus'})
-changed: [olympe-wordpress] => (item={u'password': u'missqueen2you', u'name': u'H\xe9ra'})
+changed: [olympe-wordpress] => (item={u'password': u'Qu33n0fG0ds!2025', u'name': u'H\xe9ra'})
 changed: [olympe-wordpress] => (item={u'password': u'ljflsdjfP0s3!d0n@2025', u'name': u'Pos\xe9idon'})
 changed: [olympe-wordpress] => (item={u'password': u'sljfjdslD3m3t3r!2025', u'name': u'D\xe9m\xe9ter'})
 changed: [olympe-wordpress] => (item={u'password': u'sljflfkjdAth3n@!2025', u'name': u'Ath\xe9na'})
