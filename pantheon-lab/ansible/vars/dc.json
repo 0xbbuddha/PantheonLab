@@ -63,6 +63,12 @@
                 "ENFERS" : {
                     "path" : "OU=ENFERS,DC=pantheon,DC=god",
                     "description" : "Royaume des Enfers, domaine d'Hadès",
+                    "groups" : {
+                        "OLYMPE-HELL-MANAGERS" : {
+                            "path" : "OU=OLYMPIENS,DC=pantheon,DC=god",
+                            "type" : "global"
+                        }
+                    },
                     "children" : {
                         "ELYSEE" : {
                             "path" : "OU=ELYSEE,OU=ENFERS,DC=pantheon,DC=god",
@@ -262,13 +268,13 @@
                     "groups" : ["OLYMPE-HEROS"],
                     "path" : "OU=OLYMPIENS,DC=pantheon,DC=god"
                 },
-                "orphee" : {
-                    "firstname" : "orphee",
-                    "surname" : "thrace",
-                    "password" : "Mus1cM@st3r!2025",
-                    "description" : "Musicien légendaire, fils d'Apollon et de Calliope.",
-                    "groups" : ["HERO-MORT","Remote Desktop Users"],
-                    "path" : "OU=ELYSEE,OU=ENFERS,DC=pantheon,DC=god"
+                "persephone" : {
+                    "firstname" : "persephone",
+                    "surname" : "kore",
+                    "password" : "Qu33n0fShad3s!2025",
+                    "description" : "Reine des Enfers et fille de Déméter, entre deux mondes.",
+                    "groups" : ["OLYMPE-HELL-MANAGERS"],
+                    "path" : "OU=ENFERS,DC=pantheon,DC=god"
                 },
                 "asclepios" : {
                     "firstname" : "asclepios",
@@ -299,7 +305,7 @@
                     "surname" : "underworld",
                     "password" : "D3@thL0rd!2025",
                     "description" : "Je suis Hadès, le souverain des Enfers, le maître du royaume des morts.",
-                    "groups" : ["OLYMPE-GODS","Remote Desktop Users","Remote Management Users"],
+                    "groups" : ["OLYMPE-GODS","Remote Desktop Users","Remote Management Users","OLYMPE-HELL-MANAGERS"],
                     "path" : "CN=Users,DC=pantheon,DC=god"
                 },
                 "cronos" : {
@@ -410,6 +416,11 @@
                     "path" : "OU=ELYSEE,OU=ENFERS,DC=pantheon,DC=god",
                     "type" : "global",
                     "description" : "Groupe des héros morts"
+                },
+                "OLYMPE-HELL-MANAGERS" : {
+                    "path" : "OU=OLYMPIENS,DC=pantheon,DC=god",
+                    "type" : "global",
+                    "description" : "Groupe des dirigeants de l'enfers"
                 }
             }
         }

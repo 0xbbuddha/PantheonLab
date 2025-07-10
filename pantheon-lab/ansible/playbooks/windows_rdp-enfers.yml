@@ -10,7 +10,7 @@
       win_group_membership:
         name: "Remote Desktop Users"
         members:
-          - "PANTHEON\\orphee"
+          - "PANTHEON\\persephone"
         state: present
 
     - name: Accorder le droit de connexion à distance aux membres du groupe Remote Desktop Users

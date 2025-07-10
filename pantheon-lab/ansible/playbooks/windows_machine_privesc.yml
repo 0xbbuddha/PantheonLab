@@ -5,7 +5,7 @@
 
 - import_playbook: windows_coliseum.yml
 - import_playbook: windows_rdp-winrm_access.yml
-- import_playbook: windows_rdp-enfers.yml
+#- import_playbook: windows_rdp-enfers.yml
 
 - name: Afficher un résumé de la configuration
   hosts: pantheon-dc01

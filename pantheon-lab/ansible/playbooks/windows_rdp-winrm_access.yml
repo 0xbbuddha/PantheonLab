@@ -6,12 +6,11 @@
   hosts: extensions
   tasks:
 #    - name: Ajouter les dieux du domaine et cronos au groupe local Remote Desktop Users
-    - name: Ajouter les dieux du domaine et orphee au groupe local Remote Desktop Users
+    - name: Ajouter les dieux du domaine et persephone au groupe local Remote Desktop Users
       win_group_membership:
         name: "Remote Desktop Users"
         members:
 #          - "PANTHEON\\cronos"
-          - "PANTHEON\\orphee"
           - "OLYMPE-GODS"
         state: present
 
@@ -23,6 +22,23 @@
           - "OLYMPE-GODS"
         state: present
 
+    - name: Accorder le droit de connexion à distance aux membres du groupe Remote Desktop Users
+      win_user_right:
+        name: SeRemoteInteractiveLogonRight
+        users:
+          - "Remote Desktop Users"
+        action: add
+
+
+- name: Autoriser l'accès distant RDP a persephone
+  hosts: pantheon-enfers
+  tasks:
+    - name: Ajouter persephone au groupe local Remote Desktop Users
+      win_group_membership:
+        name: "Remote Desktop Users"
+        members:
+          - "PANTHEON\\persephone"
+        state: present
     - name: Accorder le droit de connexion à distance aux membres du groupe Remote Desktop Users
       win_user_right:
         name: SeRemoteInteractiveLogonRight
