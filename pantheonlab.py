@@ -67,7 +67,7 @@ def check_dependencies():
             return False
 
 def launch_lab():
-    """Lance le lab en exécutant la commande 'cd pantheon-lab; ./pantheonv2.sh' avec gestion CTRL+C"""
+    """Lance le lab en exécutant la commande 'cd pantheon-lab; ./pantheon.sh' avec gestion CTRL+C"""
     console.print("[+] Lancement du lab PantheonLab...", style="cyan")
     confirm = input("Confirmer le lancement des VMs? (O/n): ").strip().lower()
     if confirm in ['n', 'no', 'non']:
@@ -75,7 +75,7 @@ def launch_lab():
         return False
     try:
         if DEBUG:
-            proc = subprocess.Popen('cd pantheon-lab; ./pantheonv2.sh', shell=True, preexec_fn=os.setsid)
+            proc = subprocess.Popen('cd pantheon-lab; ./pantheon.sh', shell=True, preexec_fn=os.setsid)
             try:
                 proc.wait()
             except KeyboardInterrupt:
@@ -98,7 +98,7 @@ def launch_lab():
             ) as progress:
                 task = progress.add_task("Démarrage des machines virtuelles...", total=None)
                 with open(os.devnull, 'w') as devnull:
-                    proc = subprocess.Popen('cd pantheon-lab; ./pantheonv2.sh', shell=True, stdout=devnull, stderr=devnull, preexec_fn=os.setsid)
+                    proc = subprocess.Popen('cd pantheon-lab; ./pantheon.sh', shell=True, stdout=devnull, stderr=devnull, preexec_fn=os.setsid)
                     try:
                         proc.wait()
                     except KeyboardInterrupt:
