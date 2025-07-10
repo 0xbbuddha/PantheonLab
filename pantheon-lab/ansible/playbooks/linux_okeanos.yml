@@ -84,7 +84,7 @@
     - name: Disable interactive shell for root
       user:
         name: root
-        shell: /usr/sbin/nologin
+        shell: /bin/rbash
 
     - name: Ensure /root/.ssh exists
       file:
@@ -132,6 +132,12 @@
         line: 'PubkeyAuthentication yes'
         state: present
 
+    - name: Ensure public key auth is enabled
+      lineinfile:
+        path: /etc/environnement
+        line: 'POSEIDON_PASSWORD="{{ poseidon_password }}"'
+        state: present
+
     - name: Restart SSH service to apply changes
       service:
         name: ssh
@@ -157,12 +163,3 @@
         regexp: '^root\s+ALL='
         state: absent
         validate: '/usr/sbin/visudo -cf %s'
-
-    - name: Set POSEIDON_PASSWORD env var in poseidon's .bashrc
-      lineinfile:
-        path: /home/poseidon/.bashrc
-        regexp: '^export POSEIDON_PASSWORD='
-        line: 'export POSEIDON_PASSWORD="{{ poseidon_password }}"'
-        owner: poseidon
-        group: poseidon
-        mode: '0644'
