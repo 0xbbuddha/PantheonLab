@@ -108,7 +108,6 @@ Vagrant.configure("2") do |config|
       vb.memory = "2048"
       vb.cpus = 2
       vb.name = "okeanos"
-      vb.linked_clone = true
     end
 
     okeanos.vm.provision "ansible_local" do |ansible|

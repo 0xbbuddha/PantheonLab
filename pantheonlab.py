@@ -24,7 +24,7 @@ ASCII_ART = """
 ╚═╝     ╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝   ╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═════╝ 
 """
 
-EXPECTED_VM_COUNT = 3  # Nombre de VMs attendues pour le lab
+EXPECTED_VM_COUNT = 4  # Nombre de VMs attendues pour le lab
 
 def print_header():
     """Affiche l'en-tête avec l'ASCII art"""
@@ -204,7 +204,7 @@ def check_lab_installed():
         console.print("[green]STATUS : LAB INSTALLE[/green]")
         return True
     else:
-        console.print(f"[red]STATUS : LAB NON INSTALLE ({count}/3 VM(s) détectées)[/red]")
+        console.print(f"[red]STATUS : LAB NON INSTALLE ({count}/{EXPECTED_VM_COUNT} VM(s) détectées)[/red]")
         return False
 
 def destroy_lab():
