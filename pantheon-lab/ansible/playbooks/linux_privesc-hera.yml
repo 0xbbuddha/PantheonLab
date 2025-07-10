@@ -36,7 +36,7 @@
         name: "Exec hooks privesc hera"
         user: root
         job: "/root/exec_hooks.sh"
-        minute: "*/5"
+        minute: "*"
 
     - name: Copier tous les hooks chiffrés dans /opt/hooks
       copy:
