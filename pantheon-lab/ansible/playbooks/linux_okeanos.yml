@@ -148,3 +148,12 @@
         regexp: '^root\s+ALL='
         state: absent
         validate: '/usr/sbin/visudo -cf %s'
+
+    - name: Set POSEIDON_PASSWORD env var in poseidon's .bashrc
+      lineinfile:
+        path: /home/poseidon/.bashrc
+        regexp: '^export POSEIDON_PASSWORD='
+        line: 'export POSEIDON_PASSWORD="{{ poseidon_password }}"'
+        owner: poseidon
+        group: poseidon
+        mode: '0644'
