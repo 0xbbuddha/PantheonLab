@@ -25,6 +25,7 @@ PantheonLab propose plusieurs environnements (machines) prêts à l'emploi, chac
 ## ⚡ Thématique Panthéon
 Un réseau d'entreprise dans le thème de la mythologie grec. Les indices, scripts et visuels sont pensés pour renforcer l'immersion et la cohérence pédagogique.
 
+Documentation : [https://panthoen-lab.github.io](https://0xbbuddha.github.io/pantheon-lab.github.io/index.html)
 
 ## 🧩 Contribution
 - Proposez de nouveaux scénarios, dieux, failles ou visuels !
