@@ -1,0 +1,5 @@
+- name: Setup machine Athene
+  hosts: pantheon-athene
+  become: true
+  vars_files:
+    - /home/vagrant/ansible/vars/linux_athene.yml

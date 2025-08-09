@@ -31,4 +31,7 @@ all:
     okeanos:
       hosts:
         192.168.56.15
+    athene:
+      hosts:
+        192.168.56.16
 
